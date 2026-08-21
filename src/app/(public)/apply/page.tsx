@@ -20,24 +20,19 @@ export default async function UnifiedApplyPage({
   ];
 
   return (
-    <div 
-      className="min-h-screen bg-cover bg-fixed bg-center relative"
-      style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]"></div>
-
+    <div className="min-h-screen bg-slate-900 text-slate-100 relative">
       {/* Header Banner */}
       <div 
-        className="py-24 px-6 text-center bg-cover bg-center relative z-10"
+        className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
         style={{ backgroundImage: "url('/images/media_1787224434429.jpg')" }} 
       >
-        <div className="absolute inset-0 bg-blue-950/85"></div>
-        <div className="relative z-10 text-white animate-[slideIn_1s_ease-out]">
-          <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-4 border border-blue-400/30">
+        <div className="absolute inset-0 bg-blue-950/90"></div>
+        <div className="relative z-10 text-white">
+          <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-3 border border-blue-400/30">
             Official POAF Application Center
           </div>
-          <h1 className="text-4xl md:text-6xl font-black mb-4">Unified Application Portal</h1>
-          <p className="text-base md:text-lg text-blue-200 max-w-2xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-black mb-3">Unified Application Portal</h1>
+          <p className="text-sm md:text-base text-blue-200 max-w-2xl mx-auto">
             Choose your application track below to join the movement, establish a chapter, compete in Community Impact, or partner with Pioneers of Africa's Future.
           </p>
         </div>

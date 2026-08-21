@@ -7,10 +7,10 @@ export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="md:hidden flex items-center">
+    <div className="lg:hidden flex items-center">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="text-white hover:text-blue-400 focus:outline-none"
+        className="text-white hover:text-blue-400 focus:outline-none p-2 rounded-lg"
         aria-label="Toggle Menu"
       >
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

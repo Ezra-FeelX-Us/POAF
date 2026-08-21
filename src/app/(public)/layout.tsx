@@ -31,7 +31,7 @@ export default function PublicLayout({
           Verify ID
         </Link>
       </div>
- <div className="hidden md:flex gap-3 items-center">
+ <div className="hidden lg:flex gap-3 items-center">
  <Link href="/apply" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
  Apply Now
  </Link>
