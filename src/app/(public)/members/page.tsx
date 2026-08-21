@@ -31,53 +31,18 @@ export default async function MembersPage({
     console.error("Members DB fetch fallback:", err);
   }
 
-  const staticLeaders = [
-    { poafId: "POAF-AMB-0001", name: "Ali Omari Washikala", role: "Ambassador of Kenya", department: "Pan-African Diplomacy", country: "Kenya", img: "/images/amb-kenya.png", isLeader: true, position: "Ambassador of Kenya" },
-    { poafId: "POAF-AMB-0002", name: "Kofi Mensah", role: "Ambassador of Ghana", department: "Pan-African Diplomacy", country: "Ghana", img: "/images/amb-ghana.png", isLeader: true, position: "Ambassador of Ghana" },
-    { poafId: "POAF-AMB-0003", name: "Caleb-John Dismas", role: "Ambassador of Tanzania", department: "Pan-African Diplomacy", country: "Tanzania", img: "/images/amb-tanzania.png", isLeader: true, position: "Ambassador of Tanzania" },
-    { poafId: "POAF-AMB-0004", name: "Lerato Mthembu", role: "Ambassador of South Africa", department: "Pan-African Diplomacy", country: "South Africa", img: "/images/amb-southafrica.png", isLeader: true, position: "Ambassador of South Africa" },
-    { poafId: "POAF-AMB-0005", name: "Chinedu Okafor", role: "Ambassador of Nigeria", department: "Pan-African Diplomacy", country: "Nigeria", img: "/images/amb-nigeria.png", isLeader: true, position: "Ambassador of Nigeria" },
-    { poafId: "POAF-AMB-0006", name: "Ahmed Abdellateif", role: "Ambassador of Egypt", department: "Pan-African Diplomacy", country: "Egypt", img: "/images/amb-egypt.png", isLeader: true, position: "Ambassador of Egypt" },
-    { poafId: "POAF-AMB-0007", name: "Salma El Idrissi", role: "Morocco Ambassador", department: "Pan-African Diplomacy", country: "Morocco", img: "/images/amb-morocco-salma.png", isLeader: true, position: "Morocco Ambassador" },
-    { poafId: "POAF-AMB-0008", name: "Lina Bennani", role: "Morocco Ambassador", department: "Pan-African Diplomacy", country: "Morocco", img: "/images/amb-morocco-lina.png", isLeader: true, position: "Morocco Ambassador" },
-    { poafId: "POAF-LDR-0001", name: "Lydia Teshibelay", role: "Department Leader", department: "Community Outreach", country: "Ethiopia", img: "/images/lydia-teshibelay.png", isLeader: true, position: "Ambassador & Department Head" },
-    { poafId: "POAF-SEC-0001", name: "Fireab Mulugeta", role: "Secretary", department: "Community Outreach", country: "Ethiopia", img: "/images/fireab-mulugeta.jpg", isLeader: true, position: "Ambassador & Secretary" },
-    { poafId: "POAF-LDR-0002", name: "Tebarek Alemu", role: "Department Leader", department: "Technology & Innovation", country: "Ethiopia", img: "/images/tebarek-alemu.png", isLeader: true, position: "Leader & Ambassador, Tech" },
-    { poafId: "POAF-SEC-0002", name: "Behailu Berehanu", role: "Secretary", department: "Community Outreach", country: "Ethiopia", img: "/images/behailu-berehanu.jpg", isLeader: true, position: "Ambassador & Secretary" },
-    { poafId: "POAF-MGR-0001", name: "Betlehem Tadesse", role: "Manager", department: "Community Outreach", country: "Ethiopia", img: "/images/betlehem-tadesse.jpg", isLeader: true, position: "Manager & Ambassador" },
-    { poafId: "POAF-LDR-0003", name: "Dagmawit Getye", role: "Department Leader", department: "Debate & Communication", country: "Ethiopia", img: "/images/dagmawit-getye.png", isLeader: true, position: "Leader & Ambassador, Debate" },
-    { poafId: "POAF-STL-0001", name: "Israel Tamirat", role: "Student Leader", department: "Youth Empowerment", country: "Ethiopia", img: "/images/israel-tamirat.jpg", isLeader: true, position: "Student Leader & Ambassador" },
-    { poafId: "POAF-MGR-0002", name: "Edom Esayas", role: "Manager", department: "Capacity Building", country: "Ethiopia", img: "/images/edom-esayas.jpg", isLeader: true, position: "Manager & Ambassador" },
-    { poafId: "POAF-LDR-0004", name: "Yeabsira Belete", role: "Department Leader", department: "Youth Empowerment", country: "Ethiopia", img: "/images/yeabsira-belete.png", isLeader: true, position: "Leader & Ambassador, Youth" },
-    { poafId: "POAF-STL-0002", name: "Barkot Esubalew", role: "Student Leader", department: "Youth Empowerment", country: "Ethiopia", img: "/images/barkot-esubalew.jpg", isLeader: true, position: "Student Leader & Ambassador" },
-    { poafId: "POAF-MGR-0003", name: "Yididya Melkamu", role: "Manager", department: "Capacity Building", country: "Ethiopia", img: "/images/yididya-melkamu.jpg", isLeader: true, position: "Manager & Ambassador" },
-    { poafId: "POAF-LDR-0005", name: "Sosena Maru", role: "Department Leader", department: "Capacity Building", country: "Ethiopia", img: "/images/sosena-maru.png", isLeader: true, position: "Leader & Ambassador, Capacity" },
-    { poafId: "POAF-STL-0003", name: "Bony Zerihun", role: "Student Leader", department: "Youth Empowerment", country: "Ethiopia", img: "/images/bony-zerihun.jpg", isLeader: true, position: "Ambassador & Student Leader" },
-    { poafId: "POAF-SEC-0003", name: "Abyalew Ayele", role: "Secretary", department: "Debate & Communication", country: "Ethiopia", img: "/images/abyalew-ayele.jpg", isLeader: true, position: "Secretary & Ambassador" },
-    { poafId: "POAF-LDR-0006", name: "Abel Tilahun", role: "Department Leader", department: "Research & Engineering", country: "Ethiopia", img: "/images/abel-tilahun.jpg", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-LDR-0007", name: "Dagmawit Sileshi", role: "Department Leader", department: "Debate & Communication", country: "Ethiopia", img: "/images/dagmawit-sileshi.jpg", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-LDR-0008", name: "Eleni Getachew", role: "Department Leader", department: "Capacity Building", country: "Ethiopia", img: "/images/eleni-getachew.jpg", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-LDR-0009", name: "Henok Hankore", role: "Department Leader", department: "Technology & Innovation", country: "Ethiopia", img: "/images/henok-hankore.png", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-LDR-0010", name: "Keneriyan Fikadu", role: "Department Leader", department: "Technology & Innovation", country: "Ethiopia", img: "/images/keneriyan-fikadu.jpg", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-LDR-0011", name: "Kibreab Dilamo", role: "Department Leader", department: "Research & Engineering", country: "Ethiopia", img: "/images/kibreab-dilamo.jpg", isLeader: true, position: "Leader & Ambassador" },
-    { poafId: "POAF-MGR-0004", name: "Ali Usman", role: "Chief Engineer", department: "Research & Engineering", country: "Ethiopia", img: "/images/media_1787223395009.png", isLeader: true, position: "Chief Engineer & Manager" }
-  ];
-
-  let membersToDisplay = dbMembers.length > 0 ? [
-    ...dbMembers.map(m => ({
-      id: m.id,
-      poafId: m.poafId || "POAF-MEM-VERIFIED",
-      name: `${m.firstName} ${m.lastName}`,
-      role: m.role || "Member",
-      position: m.leaderPosition || m.role,
-      department: m.department?.name || "General Assembly",
-      country: m.country?.name || "Pan-Africa",
-      img: m.photoUrl || "/images/media_1787222340022.png",
-      isLeader: m.isLeader,
-      joinedDate: m.joinedDate
-    })),
-    ...staticLeaders.filter(sl => !dbMembers.some(dm => `${dm.firstName} ${dm.lastName}`.toLowerCase() === sl.name.toLowerCase()))
-  ] : staticLeaders;
+  let membersToDisplay = dbMembers.map(m => ({
+    id: m.id,
+    poafId: m.poafId || "POAF-MEM-VERIFIED",
+    name: `${m.firstName} ${m.lastName}`,
+    role: m.role || "Member",
+    position: m.leaderPosition || m.role,
+    department: m.department?.name || "General Assembly",
+    country: m.country?.name || "Pan-Africa",
+    img: m.photoUrl || "/images/media_1787222340022.png",
+    isLeader: m.isLeader,
+    joinedDate: m.joinedDate
+  }));
 
   if (filter === "leaders") {
     membersToDisplay = membersToDisplay.filter(m => m.isLeader);
@@ -86,7 +51,7 @@ export default async function MembersPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 relative">
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 relative">
       {/* Header Banner */}
       <div 
         className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
@@ -127,16 +92,36 @@ export default async function MembersPage({
         </div>
 
         {/* Member Grid - 6 Columns */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {membersToDisplay.map((m, idx) => (
-            <MemberCard 
-              key={idx}
-              name={m.name}
-              department={m.department}
-              img={m.img} 
-            />
-          ))}
-        </div>
+        {membersToDisplay.length === 0 ? (
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center max-w-xl mx-auto space-y-4 shadow-2xl">
+            <span className="text-xs font-black uppercase tracking-wider text-blue-400 bg-blue-950 px-3 py-1 rounded-full border border-blue-800 inline-block">
+              Founding Pioneer Cohort Open
+            </span>
+            <h3 className="text-2xl font-black text-white">Be the First Verified Pioneer</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              POAF is officially open for membership applications across Africa. Submit your credentials to receive an accredited POAF ID and join the continental network.
+            </p>
+            <div className="pt-2">
+              <Link 
+                href="/apply?tab=member" 
+                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-lg transition"
+              >
+                Apply for Membership &rarr;
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {membersToDisplay.map((m, idx) => (
+              <MemberCard 
+                key={idx}
+                name={m.name}
+                department={m.department}
+                img={m.img} 
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

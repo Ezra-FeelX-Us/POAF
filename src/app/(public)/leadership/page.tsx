@@ -23,124 +23,52 @@ export default async function LeadershipPage() {
     console.error("Leadership fetch fallback:", err);
   }
 
-  // 1. Co-Founders & Executives
-  const staticFounders = [
-    {
-      name: "Ezra Michael Jofe",
-      role: "Founder & Executive President",
-      bio: "Visionary founder of Pioneers of Africa's Future (POAF), empowering youth and pioneering sustainable, youth-led pan-African solutions.",
-      country: "Ethiopia",
-      department: "Executive Council",
-      img: "/images/media_1787225249810.png"
-    }
-  ];
-
-  // 2. National Ambassadors
-  const staticAmbassadors = [
-    { name: "Ali Omari Washikala", role: "Ambassador of Kenya", country: "Kenya", img: "/images/amb-kenya.png" },
-    { name: "Kofi Mensah", role: "Ambassador of Ghana", country: "Ghana", img: "/images/amb-ghana.png" },
-    { name: "Caleb-John Dismas", role: "Ambassador of Tanzania", country: "Tanzania", img: "/images/amb-tanzania.png" },
-    { name: "Lerato Mthembu", role: "Ambassador of South Africa", country: "South Africa", img: "/images/amb-southafrica.png" },
-    { name: "Chinedu Okafor", role: "Ambassador of Nigeria", country: "Nigeria", img: "/images/amb-nigeria.png" },
-    { name: "Ahmed Abdellateif", role: "Ambassador of Egypt", country: "Egypt", img: "/images/amb-egypt.png" },
-    { name: "Salma El Idrissi", role: "Morocco Ambassador", country: "Morocco", img: "/images/amb-morocco-salma.png" },
-    { name: "Lina Bennani", role: "Morocco Ambassador", country: "Morocco", img: "/images/amb-morocco-lina.png" }
-  ];
-
-  // 3. Department Leaders
-  const staticDeptLeaders = [
-    { name: "Lydia Teshibelay", role: "Department Leader", dept: "Community Outreach", img: "/images/lydia-teshibelay.png" },
-    { name: "Tebarek Alemu", role: "Department Leader", dept: "Technology & Innovation", img: "/images/tebarek-alemu.png" },
-    { name: "Dagmawit Getye", role: "Department Leader", dept: "Debate & Communication", img: "/images/dagmawit-getye.png" },
-    { name: "Yeabsira Belete", role: "Department Leader", dept: "Youth Empowerment", img: "/images/yeabsira-belete.png" },
-    { name: "Sosena Maru", role: "Department Leader", dept: "Capacity Building", img: "/images/sosena-maru.png" },
-    { name: "Abel Tilahun", role: "Department Leader", dept: "Research & Engineering", img: "/images/abel-tilahun.jpg" },
-    { name: "Dagmawit Sileshi", role: "Department Leader", dept: "Debate & Communication", img: "/images/dagmawit-sileshi.jpg" },
-    { name: "Eleni Getachew", role: "Department Leader", dept: "Capacity Building", img: "/images/eleni-getachew.jpg" },
-    { name: "Henok Hankore", role: "Department Leader", dept: "Technology & Innovation", img: "/images/henok-hankore.png" },
-    { name: "Keneriyan Fikadu", role: "Department Leader", dept: "Technology & Innovation", img: "/images/keneriyan-fikadu.jpg" },
-    { name: "Kibreab Dilamo", role: "Department Leader", dept: "Research & Engineering", img: "/images/kibreab-dilamo.jpg" }
-  ];
-
-  // 4. Project Leaders & Managers
-  const staticManagers = [
-    { name: "Ali Usman", role: "Chief Engineer & Manager", dept: "Research & Engineering", img: "/images/media_1787223395009.png" },
-    { name: "Betlehem Tadesse", role: "Manager & Ambassador", dept: "Community Outreach", img: "/images/betlehem-tadesse.jpg" },
-    { name: "Edom Esayas", role: "Manager & Ambassador", dept: "Capacity Building", img: "/images/edom-esayas.jpg" },
-    { name: "Yididya Melkamu", role: "Manager & Ambassador", dept: "Capacity Building", img: "/images/yididya-melkamu.jpg" }
-  ];
-
-  // 5. Student Leaders & Chapter Heads
-  const staticStudentLeaders = [
-    { name: "Fireab Mulugeta", role: "Secretary & Ambassador", dept: "Community Outreach", img: "/images/fireab-mulugeta.jpg" },
-    { name: "Behailu Berehanu", role: "Secretary & Ambassador", dept: "Community Outreach", img: "/images/behailu-berehanu.jpg" },
-    { name: "Abyalew Ayele", role: "Secretary & Ambassador", dept: "Debate & Communication", img: "/images/abyalew-ayele.jpg" },
-    { name: "Israel Tamirat", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/israel-tamirat.jpg" },
-    { name: "Barkot Esubalew", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/barkot-esubalew.jpg" },
-    { name: "Bony Zerihun", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/bony-zerihun.jpg" }
-  ];
-
-  // DYNAMIC MERGING WITH DATABASE RECORDS
+  // DYNAMIC CATEGORIZATION FROM DATABASE RECORDS
   const dbFounders = allLeaders.filter(l => l.role?.toLowerCase().includes("president") || l.role?.toLowerCase().includes("founder") || l.role?.toLowerCase().includes("executive"));
   const dbAmbassadors = allLeaders.filter(l => l.role?.toLowerCase().includes("ambassador") || l.leaderPosition?.toLowerCase().includes("ambassador"));
-  const dbDeptLeaders = allLeaders.filter(l => l.role === "Department Leader" || (l.role?.toLowerCase().includes("leader") && !l.role?.toLowerCase().includes("student")));
+  const dbDeptLeaders = allLeaders.filter(l => l.role === "Department Leader" || (l.role?.toLowerCase().includes("leader") && !l.role?.toLowerCase().includes("student") && !l.role?.toLowerCase().includes("president") && !l.role?.toLowerCase().includes("founder")));
   const dbManagers = allLeaders.filter(l => l.role === "Manager" || l.role === "Chief Engineer" || l.leaderPosition?.toLowerCase().includes("manager"));
-  const dbStudentLeaders = allLeaders.filter(l => l.role === "Secretary" || l.role === "Student Leader" || l.leaderPosition?.toLowerCase().includes("student"));
+  const dbStudentLeaders = allLeaders.filter(l => l.role === "Secretary" || l.role === "Student Leader" || l.leaderPosition?.toLowerCase().includes("student") || l.leaderPosition?.toLowerCase().includes("secretary"));
 
-  const coFounders = [
-    ...dbFounders.map(l => ({
-      name: `${l.firstName} ${l.lastName}`,
-      role: l.leaderPosition || l.role,
-      bio: l.bio || "Executive council member championing sustainable pan-African student solutions.",
-      country: l.country?.name || "Pan-Africa",
-      department: l.department?.name || "Executive Council",
-      img: l.photoUrl || "/images/media_1787225249810.png"
-    })),
-    ...staticFounders.filter(sf => !dbFounders.some(df => `${df.firstName} ${df.lastName}`.toLowerCase() === sf.name.toLowerCase()))
-  ];
+  const coFounders = dbFounders.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    bio: l.bio || "Executive council member championing sustainable pan-African student solutions.",
+    country: l.country?.name || "Pan-Africa",
+    department: l.department?.name || "Executive Council",
+    img: l.photoUrl || "/images/media_1787225249810.png"
+  }));
 
-  const nationalAmbassadors = [
-    ...dbAmbassadors.map(l => ({
-      name: `${l.firstName} ${l.lastName}`,
-      role: l.leaderPosition || l.role,
-      country: l.country?.name || "Pan-Africa",
-      img: l.photoUrl || "/images/media_1787222340022.png"
-    })),
-    ...staticAmbassadors.filter(sa => !dbAmbassadors.some(da => `${da.firstName} ${da.lastName}`.toLowerCase() === sa.name.toLowerCase()))
-  ];
+  const nationalAmbassadors = dbAmbassadors.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    country: l.country?.name || "Pan-Africa",
+    img: l.photoUrl || "/images/media_1787222340022.png"
+  }));
 
-  const departmentLeaders = [
-    ...dbDeptLeaders.map(l => ({
-      name: `${l.firstName} ${l.lastName}`,
-      role: l.leaderPosition || l.role,
-      dept: l.department?.name || "General Division",
-      img: l.photoUrl || "/images/media_1787222340022.png"
-    })),
-    ...staticDeptLeaders.filter(sd => !dbDeptLeaders.some(dd => `${dd.firstName} ${dd.lastName}`.toLowerCase() === sd.name.toLowerCase()))
-  ];
+  const departmentLeaders = dbDeptLeaders.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    dept: l.department?.name || "General Division",
+    img: l.photoUrl || "/images/media_1787222340022.png"
+  }));
 
-  const projectManagers = [
-    ...dbManagers.map(l => ({
-      name: `${l.firstName} ${l.lastName}`,
-      role: l.leaderPosition || l.role,
-      dept: l.department?.name || "Engineering & Labs",
-      img: l.photoUrl || "/images/media_1787222340022.png"
-    })),
-    ...staticManagers.filter(sm => !dbManagers.some(dm => `${dm.firstName} ${dm.lastName}`.toLowerCase() === sm.name.toLowerCase()))
-  ];
+  const projectManagers = dbManagers.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    dept: l.department?.name || "Engineering & Labs",
+    img: l.photoUrl || "/images/media_1787222340022.png"
+  }));
 
-  const studentLeaders = [
-    ...dbStudentLeaders.map(l => ({
-      name: `${l.firstName} ${l.lastName}`,
-      role: l.leaderPosition || l.role,
-      dept: l.department?.name || "Campus Affairs",
-      img: l.photoUrl || "/images/media_1787222340022.png"
-    })),
-    ...staticStudentLeaders.filter(ss => !dbStudentLeaders.some(ds => `${ds.firstName} ${ds.lastName}`.toLowerCase() === ss.name.toLowerCase()))
-  ];
+  const studentLeaders = dbStudentLeaders.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    dept: l.department?.name || "Campus Affairs",
+    img: l.photoUrl || "/images/media_1787222340022.png"
+  }));
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 relative font-serif italic">
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 relative">
       {/* Header */}
       <div 
         className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
@@ -161,109 +89,127 @@ export default async function LeadershipPage() {
       <div className="container mx-auto px-4 sm:px-6 py-12 max-w-7xl relative z-20 space-y-16">
 
         {/* 1. Co-Founders & Executive Council */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-xl text-white">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase tracking-widest">
+            <span className="text-xs font-bold text-amber-400 bg-amber-950 px-3 py-1 rounded-full border border-amber-800 uppercase tracking-widest">
               Executive Presidency
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Founder & Executive Council</h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">Guiding overall vision, strategic alliances, and institutional integrity.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mt-2">Founder & Executive Council</h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">Guiding overall vision, strategic alliances, and institutional integrity.</p>
           </div>
 
           <div className="grid grid-cols-1 max-w-2xl mx-auto gap-6">
             {coFounders.map((founder, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+              <div key={i} className="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-sm flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                 <div 
-                  className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl bg-cover bg-center shadow-md border-4 border-amber-400 shrink-0"
+                  className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl bg-cover bg-center shadow-md border-4 border-amber-500 shrink-0"
                   style={{ backgroundImage: `url('${founder.img}')` }}
                 ></div>
                 <div>
-                  <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-amber-300 bg-amber-950 px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-amber-800">
                     {founder.department}
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 mt-1.5">{founder.name}</h3>
-                  <p className="text-xs sm:text-sm font-bold text-blue-600 mb-2">{founder.role}</p>
-                  <p className="text-xs text-slate-600 leading-relaxed">{founder.bio}</p>
+                  <h3 className="text-xl font-black text-white mt-1.5">{founder.name}</h3>
+                  <p className="text-xs sm:text-sm font-bold text-blue-400 mb-2">{founder.role}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed">{founder.bio}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 2. National Ambassadors - 5 Columns */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+        {/* 2. National Ambassadors */}
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-xl text-white">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 uppercase tracking-widest">
+            <span className="text-xs font-bold text-blue-400 bg-blue-950 px-3 py-1 rounded-full border border-blue-800 uppercase tracking-widest">
               Diplomatic Network
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">National Ambassadors</h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">Representing POAF sovereign student chapters across African nations.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mt-2">National Ambassadors</h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">Representing POAF sovereign student chapters across African nations.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {nationalAmbassadors.map((amb, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
-                <div 
-                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
-                  style={{ backgroundImage: `url('${amb.img}')` }}
-                ></div>
-                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors line-clamp-1 leading-snug">{amb.name}</h4>
-                <p className="text-[10px] sm:text-xs font-semibold text-blue-600 mt-0.5 line-clamp-1">{amb.role}</p>
-                <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-                  {amb.country}
-                </span>
-              </div>
-            ))}
-          </div>
+          {nationalAmbassadors.length === 0 ? (
+            <div className="bg-slate-800/40 p-8 rounded-2xl border border-slate-800 text-center max-w-xl mx-auto space-y-3">
+              <p className="text-xs text-slate-400">National representative applications are currently open for sovereign AU member states.</p>
+              <Link href="/apply?tab=ambassador" className="inline-block px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition">
+                Apply as National Representative &rarr;
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {nationalAmbassadors.map((amb, i) => (
+                <div key={i} className="bg-slate-800 rounded-2xl p-3.5 border border-slate-700 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
+                  <div 
+                    className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-600 group-hover:scale-105 transition-transform mb-2.5"
+                    style={{ backgroundImage: `url('${amb.img}')` }}
+                  ></div>
+                  <h4 className="font-bold text-white text-xs sm:text-sm line-clamp-1 leading-snug">{amb.name}</h4>
+                  <p className="text-[10px] sm:text-xs font-semibold text-blue-400 mt-0.5 line-clamp-1">{amb.role}</p>
+                  <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-700">
+                    {amb.country}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
-        {/* 3. Department Leaders - 5 Columns */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+        {/* 3. Department Leaders */}
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-xl text-white">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-widest">
-              Department Operations
+            <span className="text-xs font-bold text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800 uppercase tracking-widest">
+              Divisional Leadership
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Department Leaders</h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">Leading specialized divisions in outreach, technology, debate, research, and youth empowerment.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mt-2">Department Leaders</h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">Leading technical research, community action, engineering, and youth training.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {departmentLeaders.map((ldr, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
-                <div 
-                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
-                  style={{ backgroundImage: `url('${ldr.img}')` }}
-                ></div>
-                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-600 transition-colors line-clamp-1 leading-snug">{ldr.name}</h4>
-                <p className="text-[10px] sm:text-xs font-semibold text-blue-600 mt-0.5 line-clamp-1">{ldr.role}</p>
-                <span className="inline-block mt-1.5 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 line-clamp-1">
-                  {ldr.dept}
-                </span>
-              </div>
-            ))}
-          </div>
+          {departmentLeaders.length === 0 ? (
+            <div className="bg-slate-800/40 p-8 rounded-2xl border border-slate-800 text-center max-w-xl mx-auto space-y-3">
+              <p className="text-xs text-slate-400">Department leadership positions across our 6 continental divisions are accepting applications.</p>
+              <Link href="/apply?tab=department" className="inline-block px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition">
+                Apply for Department Leadership &rarr;
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {departmentLeaders.map((lead, i) => (
+                <div key={i} className="bg-slate-800 rounded-2xl p-3.5 border border-slate-700 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
+                  <div 
+                    className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-600 group-hover:scale-105 transition-transform mb-2.5"
+                    style={{ backgroundImage: `url('${lead.img}')` }}
+                  ></div>
+                  <h4 className="font-bold text-white text-xs sm:text-sm line-clamp-1 leading-snug">{lead.name}</h4>
+                  <p className="text-[10px] sm:text-xs font-semibold text-emerald-400 mt-0.5 line-clamp-1">{lead.role}</p>
+                  <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-700">
+                    {lead.dept}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
-        {/* 4. Project Leaders & Managers - 5 Columns */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+        {/* 4. Project Leaders & Managers */}
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-xl text-white">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-200 uppercase tracking-widest">
+            <span className="text-xs font-bold text-purple-400 bg-purple-950 px-3 py-1 rounded-full border border-purple-800 uppercase tracking-widest">
               Engineering & Execution
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Project Leaders & Managers</h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">Driving technological prototypes, community surveys, and laboratory execution.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mt-2">Project Managers</h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">Driving technological prototypes, community surveys, and laboratory execution.</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {projectManagers.map((mgr, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
+              <div key={i} className="bg-slate-800 rounded-2xl p-3.5 border border-slate-700 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-600 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${mgr.img}')` }}
                 ></div>
-                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-600 transition-colors line-clamp-1 leading-snug">{mgr.name}</h4>
-                <p className="text-[10px] sm:text-xs font-semibold text-purple-600 mt-0.5 line-clamp-1">{mgr.role}</p>
-                <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200 line-clamp-1">
+                <h4 className="font-bold text-white text-xs sm:text-sm line-clamp-1 leading-snug">{mgr.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-purple-400 mt-0.5 line-clamp-1">{mgr.role}</p>
+                <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-700">
                   {mgr.dept}
                 </span>
               </div>
@@ -271,25 +217,25 @@ export default async function LeadershipPage() {
           </div>
         </section>
 
-        {/* 5. Secretaries & Student Leaders - 5 Columns */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+        {/* 5. Secretaries & Student Leaders */}
+        <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-xl text-white">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase tracking-widest">
+            <span className="text-xs font-bold text-amber-400 bg-amber-950 px-3 py-1 rounded-full border border-amber-800 uppercase tracking-widest">
               Campus Governance
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Secretaries & Student Leaders</h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1">Coordinating documentation, debate forums, and secondary school chapters.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mt-2">Student Leadership</h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">Coordinating documentation, debate forums, and secondary school chapters.</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {studentLeaders.map((st, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
+              <div key={i} className="bg-slate-800 rounded-2xl p-3.5 border border-slate-700 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-600 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${st.img}')` }}
                 ></div>
-                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors line-clamp-1 leading-snug">{st.name}</h4>
-                <p className="text-[10px] sm:text-xs font-semibold text-amber-600 mt-0.5 line-clamp-1">{st.role}</p>
+                <h4 className="font-bold text-white text-xs sm:text-sm line-clamp-1 leading-snug">{st.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-amber-400 mt-0.5 line-clamp-1">{st.role}</p>
               </div>
             ))}
           </div>

@@ -5,15 +5,15 @@ import prisma from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  let members = 36;
-  let leaders = 12;
-  let countries = 8;
+  let members = 1;
+  let leaders = 1;
+  let countries = 15;
   let departmentsCount = 6;
-  let partnerships = 6;
-  let initiatives = 14;
-  let ongoingProjects = 4;
-  let completedProjects = 6;
-  let eventsCount = 8;
+  let partnerships = 0;
+  let initiatives = 6;
+  let ongoingProjects = 0;
+  let completedProjects = 0;
+  let eventsCount = 0;
   let activeLeaders: any[] = [];
   let allDepartments: any[] = [];
 
@@ -46,52 +46,21 @@ export default async function HomePage() {
     console.warn("Home page database fetch fallback:", err);
   }
 
-  const nationalAmbassadors = [
-    { name: "Ali Omari Washikala", role: "Ambassador of Kenya", img: "/images/amb-kenya.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Kofi Mensah", role: "Ambassador of Ghana", img: "/images/amb-ghana.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Caleb-John Dismas", role: "Ambassador of Tanzania", img: "/images/amb-tanzania.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Lerato Mthembu", role: "Ambassador of South Africa", img: "/images/amb-southafrica.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Chinedu Okafor", role: "Ambassador of Nigeria", img: "/images/amb-nigeria.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Ahmed Abdellateif", role: "Ambassador of Egypt", img: "/images/amb-egypt.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Salma El Idrissi", role: "Morocco Ambassador", img: "/images/amb-morocco-salma.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-    { name: "Lina Bennani", role: "Morocco Ambassador", img: "/images/amb-morocco-lina.png", bgPos: "bg-[length:175%] bg-[position:center_0%]" },
-  ];
+  const nationalAmbassadors = activeLeaders
+    .filter(l => l.role?.toLowerCase().includes("ambassador") || l.leaderPosition?.toLowerCase().includes("ambassador"))
+    .map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      img: l.photoUrl || "/images/media_1787222340022.png",
+      bgPos: "bg-[position:left_top]"
+    }));
 
-  const departmentLeaders = [
-    { name: "Lydia Teshibelay", role: "Ambassador, Community Outreach", img: "/images/lydia-teshibelay.png", bgPos: "bg-[position:left_top]" },
-    { name: "Fireab Mulugeta", role: "Ambassador & Secretary", img: "/images/fireab-mulugeta.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Tebarek Alemu", role: "Leader & Ambassador, Tech", img: "/images/tebarek-alemu.png", bgPos: "bg-[position:left_top]" },
-    { name: "Behailu Berehanu", role: "Ambassador & Secretary", img: "/images/behailu-berehanu.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Betlehem Tadesse", role: "Manager & Ambassador", img: "/images/betlehem-tadesse.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Dagmawit Getye", role: "Leader & Ambassador, Debate", img: "/images/dagmawit-getye.png", bgPos: "bg-[position:left_top]" },
-    { name: "Israel Tamirat", role: "Student Leader & Ambassador", img: "/images/israel-tamirat.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Edom Esayas", role: "Manager & Ambassador", img: "/images/edom-esayas.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Yeabsira Belete", role: "Leader & Ambassador, Youth", img: "/images/yeabsira-belete.png", bgPos: "bg-[position:left_top]" },
-    { name: "Barkot Esubalew", role: "Student Leader & Ambassador", img: "/images/barkot-esubalew.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Yididya Melkamu", role: "Manager & Ambassador", img: "/images/yididya-melkamu.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Sosena Maru", role: "Leader & Ambassador, Capacity", img: "/images/sosena-maru.png", bgPos: "bg-[position:left_top]" },
-    { name: "Bony Zerihun", role: "Ambassador & Student Leader", img: "/images/bony-zerihun.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Abyalew Ayele", role: "Secretary & Ambassador", img: "/images/abyalew-ayele.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Abel Tilahun", role: "Leader & Ambassador", img: "/images/abel-tilahun.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Dagmawit Sileshi", role: "Leader & Ambassador", img: "/images/dagmawit-sileshi.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Eleni Getachew", role: "Leader & Ambassador", img: "/images/eleni-getachew.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Henok Hankore", role: "Leader & Ambassador", img: "/images/henok-hankore.png", bgPos: "bg-[position:left_top]" },
-    { name: "Keneriyan Fikadu", role: "Leader & Ambassador", img: "/images/keneriyan-fikadu.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Kibreab Dilamo", role: "Leader & Ambassador", img: "/images/kibreab-dilamo.jpg", bgPos: "bg-[position:left_top]" },
-    { name: "Ali Usman", role: "Chief Engineer", img: "/images/media_1787223395009.png", bgPos: "bg-[position:left_top]" },
-  ];
-
-  const leadersToDisplay = activeLeaders.length > 0 ? [
-    ...activeLeaders
-      .filter(l => !nationalAmbassadors.some(na => na.name.toLowerCase().includes(l.firstName.toLowerCase()) && na.name.toLowerCase().includes(l.lastName.toLowerCase())) && !l.role?.toLowerCase().includes("president"))
-      .map(l => ({
-        name: `${l.firstName} ${l.lastName}`,
-        role: l.leaderPosition || l.role,
-        img: l.photoUrl || "/images/media_1787222340022.png",
-        bgPos: "bg-[position:left_top]"
-      })),
-    ...departmentLeaders.filter(dl => !activeLeaders.some(al => `${al.firstName} ${al.lastName}`.toLowerCase() === dl.name.toLowerCase()))
-  ] : departmentLeaders;
+  const leadersToDisplay = activeLeaders.map(l => ({
+    name: `${l.firstName} ${l.lastName}`,
+    role: l.leaderPosition || l.role,
+    img: l.photoUrl || "/images/media_1787222340022.png",
+    bgPos: "bg-[position:left_top]"
+  }));
 
   return (
     <div className="flex flex-col w-full">
@@ -231,18 +200,20 @@ export default async function HomePage() {
           </div>
 
           {/* National Ambassadors */}
-          <div className="border-t border-slate-200 pt-12">
-            <h3 className="text-xl md:text-2xl font-bold text-center text-slate-900 mb-8">National Ambassadors</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 text-center">
-              {nationalAmbassadors.map((amb, i) => (
-                <div key={i} className="flex flex-col items-center group p-2">
-                  <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto rounded-full mb-3 shadow-md border-2 border-slate-200 bg-no-repeat transition-transform duration-300 group-hover:scale-105 ${amb.bgPos}`} style={{ backgroundImage: `url('${amb.img}')` }}></div>
-                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors leading-snug">{amb.name}</h4>
-                  <p className="text-[10px] sm:text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-0.5">{amb.role}</p>
-                </div>
-              ))}
+          {nationalAmbassadors.length > 0 && (
+            <div className="border-t border-slate-200 pt-12">
+              <h3 className="text-xl md:text-2xl font-bold text-center text-slate-900 mb-8">National Ambassadors</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 text-center">
+                {nationalAmbassadors.map((amb, i) => (
+                  <div key={i} className="flex flex-col items-center group p-2">
+                    <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto rounded-full mb-3 shadow-md border-2 border-slate-200 bg-no-repeat transition-transform duration-300 group-hover:scale-105 ${amb.bgPos}`} style={{ backgroundImage: `url('${amb.img}')` }}></div>
+                    <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors leading-snug">{amb.name}</h4>
+                    <p className="text-[10px] sm:text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-0.5">{amb.role}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Our Departments */}
           <div className="py-14 px-4 sm:px-8 rounded-3xl overflow-hidden relative bg-cover bg-center mt-16 mb-16 shadow-xl" style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}>

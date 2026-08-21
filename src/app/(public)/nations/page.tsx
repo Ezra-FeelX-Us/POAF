@@ -11,6 +11,9 @@ export default async function NationsPage() {
   try {
     const [cnts, ambs] = await Promise.all([
       prisma.country.findMany({
+        include: {
+          members: { where: { deletedAt: null, status: "ACTIVE" } }
+        },
         orderBy: { name: "asc" }
       }),
       prisma.member.findMany({
@@ -31,32 +34,19 @@ export default async function NationsPage() {
     console.error("Nations fetch fallback:", err);
   }
 
-  const staticNations = [
-    { name: "Ethiopia", code: "ET", region: "East Africa", ambassador: "Ezra Michael Jofe / Lydia Teshibelay", pioneers: 24, status: "Active Chapter & Headquarters", img: "/images/media_1787222887149.jpg" },
-    { name: "Kenya", code: "KE", region: "East Africa", ambassador: "Ali Omari Washikala", pioneers: 6, status: "Active Diplomatic Mission", img: "/images/amb-kenya.png" },
-    { name: "Ghana", code: "GH", region: "West Africa", ambassador: "Kofi Mensah", pioneers: 5, status: "Active Diplomatic Mission", img: "/images/amb-ghana.png" },
-    { name: "Tanzania", code: "TZ", region: "East Africa", ambassador: "Caleb-John Dismas", pioneers: 4, status: "Active Diplomatic Mission", img: "/images/amb-tanzania.png" },
-    { name: "South Africa", code: "ZA", region: "Southern Africa", ambassador: "Lerato Mthembu", pioneers: 4, status: "Active Diplomatic Mission", img: "/images/amb-southafrica.png" },
-    { name: "Nigeria", code: "NG", region: "West Africa", ambassador: "Chinedu Okafor", pioneers: 7, status: "Active Diplomatic Mission", img: "/images/amb-nigeria.png" },
-    { name: "Egypt", code: "EG", region: "North Africa", ambassador: "Ahmed Abdellateif", pioneers: 3, status: "Active Diplomatic Mission", img: "/images/amb-egypt.png" },
-    { name: "Morocco", code: "MA", region: "North Africa", ambassador: "Salma El Idrissi & Lina Bennani", pioneers: 4, status: "Active Diplomatic Mission", img: "/images/amb-morocco-salma.png" },
-    { name: "Rwanda", code: "RW", region: "East Africa", ambassador: "Regional Delegate", pioneers: 2, status: "Accreditation in Progress", img: "/images/media_1787224434429.jpg" },
-    { name: "Uganda", code: "UG", region: "East Africa", ambassador: "Regional Delegate", pioneers: 2, status: "Accreditation in Progress", img: "/images/media_1787223618684.jpg" },
-    { name: "Senegal", code: "SN", region: "West Africa", ambassador: "Regional Delegate", pioneers: 2, status: "Accreditation in Progress", img: "/images/media_1787223704562.jpg" },
-    { name: "Cameroon", code: "CM", region: "Central Africa", ambassador: "Regional Delegate", pioneers: 1, status: "Accreditation in Progress", img: "/images/media_1787224603096.jpg" }
-  ];
-
-  // Merge DB dynamic countries and ambassadors
-  const nationsList = staticNations.map(sn => {
-    const matchingAmb = dbAmbassadors.find(a => a.country?.name?.toLowerCase() === sn.name.toLowerCase());
+  const nationsList = dbCountries.map(c => {
+    const matchingAmb = dbAmbassadors.find(a => a.countryId === c.id || a.country?.name?.toLowerCase() === c.name.toLowerCase());
     return {
-      ...sn,
-      ambassador: matchingAmb ? `${matchingAmb.firstName} ${matchingAmb.lastName}` : sn.ambassador
+      name: c.name,
+      code: c.code || "AF",
+      ambassador: matchingAmb ? `${matchingAmb.firstName} ${matchingAmb.lastName}` : "Accreditation Open",
+      pioneers: c.members?.length || 0,
+      status: matchingAmb ? "Active Sovereign Mission" : "Accreditation Open"
     };
   });
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 relative font-serif italic">
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 relative">
       {/* Header Banner */}
       <div 
         className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
@@ -76,13 +66,13 @@ export default async function NationsPage() {
 
       <div className="container mx-auto px-4 sm:px-6 py-12 max-w-7xl relative z-20 space-y-12 -mt-10">
         {/* Country Statistics Overview */}
-        <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-white/20 text-slate-900 flex flex-wrap justify-between items-center gap-6">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl text-white flex flex-wrap justify-between items-center gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-950 px-2.5 py-0.5 rounded border border-blue-800">
               Continental Coverage
             </span>
-            <h2 className="text-2xl font-black mt-1">{nationsList.length} Represented Sovereign Nations</h2>
-            <p className="text-xs text-slate-600">Empowering student leaders across East, West, North, Central, and Southern Africa.</p>
+            <h2 className="text-2xl font-black mt-1">{nationsList.length} Sovereign Nations in Registry</h2>
+            <p className="text-xs text-slate-400">Empowering student leaders across East, West, North, Central, and Southern Africa.</p>
           </div>
           
           <div className="flex gap-3">
@@ -100,40 +90,27 @@ export default async function NationsPage() {
           {nationsList.map((nation, idx) => (
             <div 
               key={idx} 
-              className="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-white/30 text-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col justify-between"
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl text-white hover:border-blue-700 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <div 
-                    className="w-14 h-14 rounded-2xl bg-cover bg-center shadow border-2 border-slate-200"
-                    style={{ backgroundImage: `url('${nation.img}')` }}
-                  />
-                  <span className="font-mono text-xs font-black bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="font-mono text-xs font-bold text-blue-400 bg-blue-950 px-2.5 py-1 rounded-full border border-blue-800">
                     {nation.code}
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">
+                    {nation.pioneers} Pioneers
                   </span>
                 </div>
 
-                <h3 className="text-xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">
-                  {nation.name}
-                </h3>
-                <span className="text-[10px] font-bold uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-1">
-                  {nation.region}
-                </span>
-
-                <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
-                  <div>
-                    <span className="font-bold text-slate-800">Ambassador:</span> {nation.ambassador}
-                  </div>
-                  <div>
-                    <span className="font-bold text-slate-800">Pioneers Mobilized:</span> <strong className="text-emerald-700">{nation.pioneers}</strong>
-                  </div>
-                </div>
+                <h3 className="text-xl font-black text-white mb-1">{nation.name}</h3>
+                <p className="text-xs text-slate-400">Ambassador: <strong className="text-white">{nation.ambassador}</strong></p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100">
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md block text-center border border-emerald-200">
-                  {nation.status}
-                </span>
+              <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                <span className="text-[11px] text-slate-500">{nation.status}</span>
+                <Link href="/apply?tab=member" className="text-blue-400 hover:text-blue-300 font-bold">
+                  Join Chapter &rarr;
+                </Link>
               </div>
             </div>
           ))}

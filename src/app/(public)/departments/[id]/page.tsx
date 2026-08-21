@@ -135,27 +135,29 @@ export default async function DepartmentDetailPage({ params }: { params: Promise
 
         {/* 4. Active Division Pioneers */}
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-xl space-y-6">
-          <h2 className="text-xl font-black text-white border-b border-slate-800 pb-3">4. Active Division Pioneers ({dbDept?.members?.length || 48})</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(dbDept?.members?.length ? dbDept.members : [
-              { firstName: 'Henok', lastName: 'Hankore', poafId: 'POAF-MEM-0005', role: 'Leader & Ambassador', country: { name: 'Ethiopia' } },
-              { firstName: 'Keneriyan', lastName: 'Fikadu', poafId: 'POAF-MEM-0006', role: 'Secretary', country: { name: 'Ethiopia' } },
-              { firstName: 'Ali', lastName: 'Usman', poafId: 'POAF-MEM-0007', role: 'Project Leader', country: { name: 'Ethiopia' } }
-            ]).map((m: any, i: number) => (
-              <div key={i} className="bg-slate-800/60 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-mono text-[10px] text-blue-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-700 font-bold">{m.poafId || 'POAF-MEM-0000'}</span>
-                    <span className="text-[10px] text-slate-400">{m.country?.name || 'Pan-Africa'}</span>
+          <h2 className="text-xl font-black text-white border-b border-slate-800 pb-3">4. Active Division Pioneers ({dbDept?.members?.length || 0})</h2>
+          {!dbDept?.members || dbDept.members.length === 0 ? (
+            <div className="p-8 text-center text-slate-500 bg-slate-800/40 rounded-2xl border border-slate-800 text-xs">
+              No pioneer members registered in this division yet. Pioneers assigned upon membership approval will appear here.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {dbDept.members.map((m: any, i: number) => (
+                <div key={i} className="bg-slate-800/60 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-mono text-[10px] text-blue-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-700 font-bold">{m.poafId || 'POAF-MEM-0000'}</span>
+                      <span className="text-[10px] text-slate-400">{m.country?.name || 'Pan-Africa'}</span>
+                    </div>
+                    <h4 className="font-bold text-white text-sm mt-1">{m.firstName} {m.lastName}</h4>
                   </div>
-                  <h4 className="font-bold text-white text-sm mt-1">{m.firstName} {m.lastName}</h4>
+                  <div className="mt-2 pt-2 border-t border-slate-700">
+                    <span className="text-[9px] font-bold bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-full uppercase border border-indigo-800">{m.role || 'Member'}</span>
+                  </div>
                 </div>
-                <div className="mt-2 pt-2 border-t border-slate-700">
-                  <span className="text-[9px] font-bold bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-full uppercase border border-indigo-800">{m.role || 'Member'}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 5. Department Impact Scorecard */}

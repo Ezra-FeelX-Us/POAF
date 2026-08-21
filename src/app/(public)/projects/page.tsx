@@ -24,124 +24,28 @@ export default async function ProjectsPage({ searchParams }: { searchParams?: Pr
     console.error("Projects DB fetch fallback:", err);
   }
 
-  const staticProjects = [
-    {
-      id: "p1",
-      poafId: "POAF-PRJ-2026-001",
-      title: "POAF Digital Platform & Offline Portal",
-      status: "ONGOING",
-      department: "Technology & Innovation",
-      country: "Pan-Africa (HQ Ethiopia)",
-      description: "Developing pan-African tools for student collaboration, resource sharing, and offline caching for schools with low bandwidth.",
-      leader: "Tebarek Alemu",
-      assistants: ["Henok Hankore", "Ali Usman"],
-      image: "/images/media_1787223249571.jpg",
-      progress: 65,
-      targetBeneficiaries: 1500,
-      actualBeneficiaries: 1820
-    },
-    {
-      id: "p2",
-      poafId: "POAF-PRJ-2026-002",
-      title: "Clean Water & Village Sanitation Survey",
-      status: "ONGOING",
-      department: "Community Outreach",
-      country: "Ethiopia",
-      description: "Conducting grassroots household surveys in rural communities and implementing low-cost filtration solutions.",
-      leader: "Lydia Teshibelay",
-      assistants: ["Fireab Mulugeta", "Behailu Berehanu"],
-      image: "/images/media_1787224493193.jpg",
-      progress: 45,
-      targetBeneficiaries: 500,
-      actualBeneficiaries: 637
-    },
-    {
-      id: "p3",
-      poafId: "POAF-PRJ-2026-003",
-      title: "Solar Micro-Irrigation Blueprint",
-      status: "APPROVED",
-      department: "Research & Engineering",
-      country: "Tanzania & Kenya",
-      description: "Open-source engineering blueprints for affordable solar pumps designed for youth agricultural initiatives.",
-      leader: "Ali Usman",
-      assistants: ["Abel Tilahun", "Kibreab Dilamo"],
-      image: "/images/media_1787223395009.png",
-      progress: 80,
-      targetBeneficiaries: 300,
-      actualBeneficiaries: 340
-    },
-    {
-      id: "p4",
-      poafId: "POAF-PRJ-2025-004",
-      title: "Pan-African Student Debate Cup",
-      status: "COMPLETED",
-      department: "Debate & Communication",
-      country: "Pan-Africa (12 Nations)",
-      description: "Continental virtual tournament uniting students across 12 countries to debate economic growth and youth leadership.",
-      leader: "Dagmawit Getye",
-      assistants: ["Dagmawit Sileshi", "Abyalew Ayele"],
-      image: "/images/media_1787223618684.jpg",
-      progress: 100,
-      targetBeneficiaries: 800,
-      actualBeneficiaries: 1140
-    },
-    {
-      id: "p5",
-      poafId: "POAF-PRJ-2025-005",
-      title: "High School Leadership Chapters (50 Schools)",
-      status: "COMPLETED",
-      department: "Youth Empowerment",
-      country: "Ethiopia, Kenya, Ghana",
-      description: "Established accredited student chapters with structured governance and community service curricula.",
-      leader: "Yeabsira Belete",
-      assistants: ["Israel Tamirat", "Barkot Esubalew"],
-      image: "/images/media_1787223704562.jpg",
-      progress: 100,
-      targetBeneficiaries: 2000,
-      actualBeneficiaries: 2450
-    },
-    {
-      id: "p6",
-      poafId: "POAF-PRJ-2026-006",
-      title: "CAD Solar Desalination Prototype",
-      status: "PROPOSED",
-      department: "Research & Engineering",
-      country: "Egypt & Morocco",
-      description: "Engineering research into parabolic solar reflectors to produce potable drinking water in coastal communities.",
-      leader: "Ali Usman",
-      assistants: ["Yared Tadesse", "Ahmed Abdellateif"],
-      image: "/images/media_1787224434429.jpg",
-      progress: 20,
-      targetBeneficiaries: 400,
-      actualBeneficiaries: 400
-    }
-  ];
-
-  const projectsToDisplay = dbProjects.length > 0 ? dbProjects.map((p, i) => {
-    const staticInfo = staticProjects[i % staticProjects.length];
-    return {
-      id: p.id,
-      poafId: p.poafId || staticInfo.poafId,
-      title: p.title,
-      status: p.status,
-      department: p.department?.name || staticInfo.department,
-      country: p.country || staticInfo.country,
-      description: p.description,
-      leader: staticInfo.leader,
-      assistants: staticInfo.assistants,
-      image: staticInfo.image,
-      progress: p.progressPct || staticInfo.progress,
-      targetBeneficiaries: p.targetBeneficiaries || staticInfo.targetBeneficiaries,
-      actualBeneficiaries: p.actualBeneficiaries || staticInfo.actualBeneficiaries
-    };
-  }) : staticProjects;
+  const projectsToDisplay = dbProjects.map(p => ({
+    id: p.id,
+    poafId: p.poafId || "POAF-PRJ-ACTIVE",
+    title: p.title,
+    status: p.status || "APPROVED",
+    department: p.department?.name || "General Division",
+    country: "Pan-Africa",
+    description: p.description || "Youth-led community impact project.",
+    leader: p.teamMembers?.find((tm: any) => tm.role === "LEADER")?.member ? `${p.teamMembers.find((tm: any) => tm.role === "LEADER").member.firstName} ${p.teamMembers.find((tm: any) => tm.role === "LEADER").member.lastName}` : "Project Team",
+    assistants: p.teamMembers?.filter((tm: any) => tm.role !== "LEADER").map((tm: any) => `${tm.member?.firstName} ${tm.member?.lastName}`) || [],
+    image: "/images/media_1787223249571.jpg",
+    progress: p.progressPct || 0,
+    targetBeneficiaries: 500,
+    actualBeneficiaries: 0
+  }));
 
   const filteredProjects = activeFilter === "ALL" 
     ? projectsToDisplay 
     : projectsToDisplay.filter(p => p.status.toUpperCase() === activeFilter.toUpperCase());
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 relative font-serif italic">
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 relative">
       {/* Header Banner */}
       <div 
         className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
@@ -185,8 +89,27 @@ export default async function ProjectsPage({ searchParams }: { searchParams?: Pr
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
+        {filteredProjects.length === 0 ? (
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center max-w-xl mx-auto space-y-4 shadow-2xl">
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800 inline-block">
+              Open Proposal Track
+            </span>
+            <h3 className="text-2xl font-black text-white">No Active Projects in this Stage</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Have a grassroots community solution or technological prototype for Africa? Submit an official project proposal to assemble a pioneer team and receive support.
+            </p>
+            <div className="pt-2">
+              <Link 
+                href="/apply?tab=project" 
+                className="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-lg transition"
+              >
+                Submit Project Proposal &rarr;
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project) => (
             <div 
               key={project.id} 
               className="bg-white/95 backdrop-blur-md rounded-3xl overflow-hidden shadow-xl border border-white/30 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
@@ -262,7 +185,8 @@ export default async function ProjectsPage({ searchParams }: { searchParams?: Pr
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Submit Proposal Banner */}
         <div 
