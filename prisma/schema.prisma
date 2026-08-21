@@ -124,6 +124,11 @@ model Member {
   invitedBy        String?  
   inviteCount      Int      @default(0)
 
+  // Grade Board & Operational Metrics
+  totalPoints      Int      @default(0)
+  gradeTier        String   @default("DISTINCTION") // DISTINCTION, HONORS, COMMENDED, ACTIVE
+  tasksCompleted   Int      @default(0)
+
   displayOnMembersBoard     Boolean  @default(true)
   displayOnLeadershipBoard  Boolean  @default(false)
   displayOnHomepage         Boolean  @default(false)
@@ -388,18 +393,39 @@ model RSVP {
   @@unique([eventId, memberId])
 }
 // ----------------------------------------
-// PROJECT MANAGEMENT (Tasks, Issues, Messages)
+// PROJECT MANAGEMENT & OPERATIONAL TASK BOARD
 // ----------------------------------------
 model Task {
   id          String   @id @default(uuid())
+  poafId      String?  @unique // e.g. POAF-TSK-0001
   title       String
   description String?
-  status      String   @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED, OVERDUE
+  status      String   @default("PENDING") // PENDING, IN_PROGRESS, SUBMITTED, GRADED, REVISION_REQUESTED, COMPLETED
   priority    String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
   deadline    DateTime?
   
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  departmentId String?  // Optional direct department task
+  
+  // Task Giver info (Leader / Admin)
+  giverName   String?
+  giverRole   String?
+  
+  // Grading & Evaluation
+  maxPoints   Int      @default(100)
+  awardedGrade Int?
+  gradeFeedback String?
+  
+  // Member Work Submission
+  submissionContent String?
+  submissionLink    String?
+  submittedAt       DateTime?
+  
+  // Reviewer info
+  reviewedBy  String?
+  reviewedAt  DateTime?
+
+  projectId   String?
+  project     Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
   assigneeId  String?
   assignee    Member?  @relation("AssignedTasks", fields: [assigneeId], references: [id])
