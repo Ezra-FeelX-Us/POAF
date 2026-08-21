@@ -113,7 +113,7 @@ function LoginForm() {
 
   return (
     <div 
-      className="min-h-screen bg-cover bg-center relative flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-serif italic"
+      className="min-h-screen bg-cover bg-center relative flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans"
       style={{ backgroundImage: "url('/images/media_1787222862970.jpg')" }}
     >
       <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-sm"></div>

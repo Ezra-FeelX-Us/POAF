@@ -93,7 +93,7 @@ export default function PortalRoleSwitcher({
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl text-slate-100 ring-1 ring-black/50 focus:outline-none z-50 overflow-hidden font-serif italic">
+        <div className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl text-slate-100 ring-1 ring-black/50 focus:outline-none z-50 overflow-hidden font-sans">
           {/* User Header */}
           <div className="px-4 py-3 bg-slate-950/80 border-b border-slate-800">
             <p className="text-xs font-bold text-slate-400">Signed in as</p>

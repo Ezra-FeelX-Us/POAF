@@ -37,7 +37,7 @@ export default async function OfficePortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 font-serif italic py-10 px-4 sm:px-6">
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans py-10 px-4 sm:px-6">
       <div className="container mx-auto max-w-7xl space-y-8">
         
         {/* Office Header */}

@@ -490,3 +490,34 @@ model DepartmentAnnouncement {
   authorRole   String?
   createdAt    DateTime @default(now())
 }
+
+// ----------------------------------------
+// DEPARTMENT MEETINGS & SECRETARIAT MINUTES
+// ----------------------------------------
+model DepartmentMeeting {
+  id              String   @id @default(uuid())
+  departmentId    String
+  title           String
+  meetingDate     DateTime @default(now())
+  agenda          String?
+  minutes         String?
+  decisions       String?
+  actionItems     String?
+  attendanceCount Int      @default(0)
+  secretaryName   String?
+  createdAt       DateTime @default(now())
+}
+
+// ----------------------------------------
+// STUDENT LEADER FEEDBACK & SUGGESTIONS
+// ----------------------------------------
+model StudentFeedback {
+  id            String   @id @default(uuid())
+  departmentId  String
+  studentName   String
+  studentPoafId String?
+  topic         String
+  suggestion    String
+  status        String   @default("NEW") // NEW, REVIEWED, IMPLEMENTED
+  createdAt     DateTime @default(now())
+}
