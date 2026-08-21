@@ -150,7 +150,7 @@ function LoginForm() {
               selectedRole === "leader" ? "bg-indigo-600 text-white shadow" : "text-slate-300 hover:text-white hover:bg-white/5"
             }`}
           >
-            Department Leader
+            Dept Leader
           </button>
           <button
             type="button"
