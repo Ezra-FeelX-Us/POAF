@@ -197,12 +197,36 @@ export default async function HomePage() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-500 opacity-20 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
             <h3 className="text-2xl font-bold text-center mb-8 relative z-10">Global Impact & Statistics</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 relative z-10 text-center">
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{members}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Registered Members</p></div>
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{leaders}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Active Leaders</p></div>
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{initiatives > 0 ? initiatives : completedProjects + ongoingProjects}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Active Initiatives</p></div>
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{countries}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Nations Represented</p></div>
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{departmentsCount}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Departments</p></div>
-              <div><p className="text-4xl font-black text-yellow-400 mb-2">{partnerships}</p><p className="text-xs uppercase tracking-widest font-bold text-slate-300">Official Partners</p></div>
+              <Link href="/members" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-transparent hover:border-slate-700">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{members}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Registered Members</p>
+                <p className="text-[10px] text-slate-400 mt-1">Official Members Board &rarr;</p>
+              </Link>
+              <Link href="/leadership" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-transparent hover:border-slate-700">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{leaders}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Active Leaders</p>
+                <p className="text-[10px] text-slate-400 mt-1">Leadership Roster &rarr;</p>
+              </Link>
+              <Link href="/projects" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-transparent hover:border-slate-700">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{initiatives > 0 ? initiatives : completedProjects + ongoingProjects}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Active Initiatives</p>
+                <p className="text-[10px] text-slate-400 mt-1">Projects & Reports &rarr;</p>
+              </Link>
+              <Link href="/leadership" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-transparent hover:border-slate-700">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{countries}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Nations Represented</p>
+                <p className="text-[10px] text-slate-400 mt-1">Pan-African Map &rarr;</p>
+              </Link>
+              <Link href="/departments" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-slate-700/50 hover:border-slate-600 bg-slate-800/40">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{departmentsCount}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Departments</p>
+                <p className="text-[10px] text-slate-400 mt-1">Continental Divisions &rarr;</p>
+              </Link>
+              <Link href="/about" className="group p-3 rounded-2xl hover:bg-slate-800/80 transition-all border border-transparent hover:border-slate-700">
+                <p className="text-4xl font-black text-yellow-400 mb-2 group-hover:scale-105 transition-transform">{partnerships}</p>
+                <p className="text-xs uppercase tracking-widest font-bold text-slate-300 group-hover:text-yellow-300 transition-colors">Official Partners</p>
+                <p className="text-[10px] text-slate-400 mt-1">Partner Network &rarr;</p>
+              </Link>
             </div>
           </div>
 

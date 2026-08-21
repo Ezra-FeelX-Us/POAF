@@ -15,20 +15,27 @@ export async function processApplication(formData: FormData) {
   // If status is ACCEPTED, we do auto-provisioning
   if (newStatus === "ACCEPTED" && app.status !== "ACCEPTED") {
     const payload = JSON.parse(app.payload || "{}");
+    const assignedRole = (formData.get("assignedRole") as string) || (app.type === "LEADERSHIP" ? "Department Leader" : "Member");
+    const departmentId = (formData.get("departmentId") as string) || payload.departmentId || undefined;
+    const isLeaderFlag = formData.get("isLeader") === "true" || assignedRole !== "Member" || app.type === "LEADERSHIP";
     
-    if (app.type === "MEMBERSHIP") {
-      const poafId = await generatePoafId("MEM");
+    if (app.type === "MEMBERSHIP" || app.type === "LEADERSHIP") {
+      const prefix = isLeaderFlag ? "LDR" : "MEM";
+      const poafId = await generatePoafId(prefix);
       
       const member = await prisma.member.create({
         data: {
           poafId,
           firstName: payload.firstName || payload.fullName?.split(" ")[0] || "New",
-          lastName: payload.lastName || payload.fullName?.split(" ").slice(1).join(" ") || "Member",
+          lastName: payload.lastName || payload.fullName?.split(" ").slice(1).join(" ") || "Pioneer",
           email: payload.email || undefined,
-          role: "Member",
+          role: assignedRole,
+          isLeader: isLeaderFlag,
+          leaderPosition: payload.position || (isLeaderFlag ? assignedRole : undefined),
+          departmentId: departmentId || undefined,
           status: "ACTIVE",
           countryId: payload.countryId || (await prisma.country.findFirst())?.id || "",
-          photoUrl: app.photoUrl
+          photoUrl: app.photoUrl || payload.photoUrl || undefined
         }
       });
 
@@ -36,12 +43,35 @@ export async function processApplication(formData: FormData) {
       if (app.userId) {
         await prisma.user.update({
           where: { id: app.userId },
-          data: { role: "MEMBER", memberId: member.id }
+          data: { 
+            role: isLeaderFlag ? "LEADER" : "MEMBER", 
+            memberId: member.id 
+          }
         });
       }
+    } else if (app.type === "PROPOSAL" || app.type === "CHAPTER" || app.type === "PROJECT") {
+      const poafId = await generatePoafId("PRJ");
+      const firstDept = await prisma.department.findFirst();
+      await prisma.project.create({
+        data: {
+          poafId,
+          title: payload.title || payload.projectName || "New Continental Initiative",
+          description: payload.description || payload.summary || "Approved Pioneer Initiative",
+          status: "APPROVED",
+          category: payload.category || "Community Impact",
+          departmentId: departmentId || firstDept?.id || "",
+          country: payload.country || payload.countryName || undefined
+        }
+      });
+    } else if (app.type === "PARTNERSHIP") {
+      await prisma.partnership.create({
+        data: {
+          organizationName: payload.organizationName || payload.orgName || payload.fullName || "Official Partner",
+          organizationType: payload.partnerType || payload.organizationType || "Institutional Partner",
+          website: payload.website || undefined
+        }
+      });
     }
-    
-    // Can expand for LEADERSHIP, CHAPTER, PARTNERSHIP logic here later.
   }
 
   // Record Audit Log
