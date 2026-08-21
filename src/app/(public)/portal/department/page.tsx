@@ -234,7 +234,7 @@ export default async function DepartmentPortalPage() {
 
             {pendingSubmissions.length === 0 ? (
               <div className="p-12 text-center text-slate-500 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
-                ✨ No submissions pending review. Newly submitted member work will appear here automatically for evaluation.
+                 No submissions pending review. Newly submitted member work will appear here automatically for evaluation.
               </div>
             ) : (
               <div className="space-y-4 max-h-[480px] overflow-y-auto pr-1">
@@ -267,7 +267,7 @@ export default async function DepartmentPortalPage() {
                             rel="noreferrer" 
                             className="text-blue-600 font-bold hover:underline inline-flex items-center gap-1"
                           >
-                            🔗 Open Submitted Work / Document Link &rarr;
+                             Open Submitted Work / Document Link &rarr;
                           </a>
                         </div>
                       )}
@@ -352,7 +352,7 @@ export default async function DepartmentPortalPage() {
                 {membersList.map((m: any, idx: number) => (
                   <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                     <td className="p-3 font-bold text-slate-500">
-                      {idx === 0 ? "🥇 #1" : idx === 1 ? "🥈 #2" : idx === 2 ? "🥉 #3" : `#${idx + 1}`}
+                      {idx === 0 ? " #1" : idx === 1 ? " #2" : idx === 2 ? " #3" : `#${idx + 1}`}
                     </td>
                     <td className="p-3 font-black text-slate-900">
                       {m.firstName} {m.lastName}

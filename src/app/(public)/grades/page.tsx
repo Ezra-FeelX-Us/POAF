@@ -67,17 +67,17 @@ export default async function PioneerGradeBoardPage() {
         {/* Tier Badges Info Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-amber-900/40 backdrop-blur-md rounded-2xl p-5 border border-amber-500/40 text-center">
-            <span className="text-2xl">🥇</span>
+            <span className="text-2xl"></span>
             <h3 className="text-base font-black text-amber-300 mt-1">Pioneer Distinction</h3>
             <p className="text-xs text-amber-100 mt-0.5">300+ Points • Highest Executive Recognition & Seed Grants</p>
           </div>
           <div className="bg-indigo-900/40 backdrop-blur-md rounded-2xl p-5 border border-indigo-500/40 text-center">
-            <span className="text-2xl">🥈</span>
+            <span className="text-2xl"></span>
             <h3 className="text-base font-black text-indigo-300 mt-1">Pioneer Honors</h3>
             <p className="text-xs text-indigo-100 mt-0.5">150+ Points • Continental Fellowship & Ambassador Priority</p>
           </div>
           <div className="bg-slate-800/60 backdrop-blur-md rounded-2xl p-5 border border-slate-600 text-center">
-            <span className="text-2xl">🥉</span>
+            <span className="text-2xl"></span>
             <h3 className="text-base font-black text-slate-300 mt-1">Pioneer Commended</h3>
             <p className="text-xs text-slate-300 mt-0.5">50+ Points • Active Assignment Contributor</p>
           </div>
@@ -123,7 +123,7 @@ export default async function PioneerGradeBoardPage() {
                 {rankings.map((p, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
                     <td className="p-3 font-black text-slate-600">
-                      {idx === 0 ? "🥇 #1" : idx === 1 ? "🥈 #2" : idx === 2 ? "🥉 #3" : `#${idx + 1}`}
+                      {idx === 0 ? " #1" : idx === 1 ? " #2" : idx === 2 ? " #3" : `#${idx + 1}`}
                     </td>
                     <td className="p-3 font-black text-slate-900">{p.name}</td>
                     <td className="p-3 font-mono font-bold text-blue-700">{p.poafId}</td>

@@ -97,7 +97,7 @@ export default function PublicLayout({
  </div>
 
  <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
- <p>© {new Date().getFullYear()} Pioneers of Africa's Future (POAF). All rights reserved.</p>
+ <p> {new Date().getFullYear()} Pioneers of Africa's Future (POAF). All rights reserved.</p>
  <p className="font-mono text-[11px]">Building Leaders • Solving Problems • Creating Africa's Future</p>
  </div>
  </div>

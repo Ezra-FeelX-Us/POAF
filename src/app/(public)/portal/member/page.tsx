@@ -122,7 +122,7 @@ export default async function MemberDashboardPage() {
                   {currentMember.role}
                 </span>
                 <span className="text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-900 border border-purple-300 px-2.5 py-0.5 rounded-full">
-                  🏆 Honor: {currentMember.gradeTier || "DISTINCTION"}
+                   Honor: {currentMember.gradeTier || "DISTINCTION"}
                 </span>
               </div>
             </div>
@@ -212,20 +212,20 @@ export default async function MemberDashboardPage() {
                   {task.status === "GRADED" ? (
                     <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-xs space-y-1">
                       <div className="flex justify-between items-center">
-                        <span className="font-bold text-emerald-800">✅ Evaluated & Graded:</span>
+                        <span className="font-bold text-emerald-800"> Evaluated & Graded:</span>
                         <span className="font-black text-emerald-900 font-mono text-sm">{task.awardedGrade} / {task.maxPoints} pts</span>
                       </div>
                       <p className="text-emerald-700 text-[11px]">Feedback: "{task.gradeFeedback || "Great work!"}"</p>
                     </div>
                   ) : task.status === "SUBMITTED" ? (
                     <div className="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800 flex items-center justify-between">
-                      <span>⏳ Work submitted. Awaiting leader review & points award.</span>
+                      <span> Work submitted. Awaiting leader review & points award.</span>
                       <span className="text-[10px] font-bold uppercase bg-amber-200/80 px-2 py-0.5 rounded">In Queue</span>
                     </div>
                   ) : (
                     <details className="bg-white p-3 rounded-xl border border-slate-200 text-xs cursor-pointer">
                       <summary className="font-bold text-blue-600 hover:text-blue-700 flex items-center justify-between">
-                        <span>📤 Submit Work for Leader Review</span>
+                        <span> Submit Work for Leader Review</span>
                         <span className="text-[10px] text-slate-400 font-normal">Click to open form</span>
                       </summary>
                       
@@ -289,7 +289,7 @@ export default async function MemberDashboardPage() {
                 <h3 className="text-lg font-black mt-0.5">Tier: {currentMember.gradeTier || "DISTINCTION"}</h3>
                 <p className="text-[11px] text-purple-200">Eligible for Continental Leadership Distinctions & POAF Grants.</p>
               </div>
-              <div className="text-3xl">🏅</div>
+              <div className="text-3xl"></div>
             </div>
 
             {/* Graded Tasks Feed */}

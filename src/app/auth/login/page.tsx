@@ -141,7 +141,7 @@ function LoginForm() {
               selectedRole === "member" ? "bg-blue-600 text-white shadow" : "text-slate-300 hover:text-white hover:bg-white/5"
             }`}
           >
-            🎓 Student Member
+            Student Member
           </button>
           <button
             type="button"
@@ -150,7 +150,7 @@ function LoginForm() {
               selectedRole === "leader" ? "bg-indigo-600 text-white shadow" : "text-slate-300 hover:text-white hover:bg-white/5"
             }`}
           >
-            👑 Dept Leader
+            Department Leader
           </button>
           <button
             type="button"
@@ -159,7 +159,7 @@ function LoginForm() {
               selectedRole === "ambassador" ? "bg-emerald-600 text-white shadow" : "text-slate-300 hover:text-white hover:bg-white/5"
             }`}
           >
-            🌍 Ambassador
+            Ambassador
           </button>
           <button
             type="button"
@@ -168,7 +168,7 @@ function LoginForm() {
               selectedRole === "admin" ? "bg-slate-900 text-white shadow" : "text-slate-300 hover:text-white hover:bg-white/5"
             }`}
           >
-            🛡️ Admin
+            Admin
           </button>
         </div>
 
