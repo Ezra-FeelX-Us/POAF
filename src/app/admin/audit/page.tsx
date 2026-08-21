@@ -15,67 +15,9 @@ export default async function AdminAuditPage() {
     console.warn("Audit logs fetch fallback:", err);
   }
 
-  const sampleLogs = [
-    {
-      id: "log-1",
-      userName: "Admin Ezra Michael",
-      userRole: "SUPER_ADMIN",
-      action: "Appoint Ambassador",
-      entity: "National Ambassador",
-      details: "Appointed Ali Omari Washikala as Ambassador of Kenya",
-      prevValue: "Unassigned",
-      newValue: "Ambassador of Kenya",
-      createdAt: new Date("2026-08-20T14:32:00Z")
-    },
-    {
-      id: "log-2",
-      userName: "Admin Ezra Michael",
-      userRole: "SUPER_ADMIN",
-      action: "Approve Application",
-      entity: "Membership Intake",
-      details: "Approved Application POAF-APP-8831 for Lydia Teshibelay",
-      prevValue: "SUBMITTED",
-      newValue: "ACCEPTED (POAF-MEM-0024)",
-      createdAt: new Date("2026-08-20T12:15:00Z")
-    },
-    {
-      id: "log-3",
-      userName: "Leader Tebarek Alemu",
-      userRole: "DEPT_LEADER",
-      action: "Project Milestone Update",
-      entity: "Technology & Innovation",
-      details: "Advanced 'POAF Digital Platform' completion to 65%",
-      prevValue: "50%",
-      newValue: "65%",
-      createdAt: new Date("2026-08-19T18:40:00Z")
-    },
-    {
-      id: "log-4",
-      userName: "Admin Ezra Michael",
-      userRole: "SUPER_ADMIN",
-      action: "Register Partner",
-      entity: "Partnerships",
-      details: "Onboarded 'KB's Opportunity Hub' to official partner registry",
-      prevValue: "None",
-      newValue: "KB's OPPORTUNITY HUB (POAF-PTN-0001)",
-      createdAt: new Date("2026-08-18T10:00:00Z")
-    },
-    {
-      id: "log-5",
-      userName: "Leader Dagmawit Getye",
-      userRole: "DEPT_LEADER",
-      action: "Schedule Event",
-      entity: "Debate & Communication",
-      details: "Scheduled Pan-African Student Debate Cup preliminaries",
-      prevValue: "None",
-      newValue: "Event Scheduled (Virtual)",
-      createdAt: new Date("2026-08-17T15:20:00Z")
-    }
-  ];
-
-  const displayLogs = logs.length > 0 ? logs.map((l: any) => ({
+  const displayLogs = logs.map((l: any) => ({
     id: l.id,
-    userName: l.user?.name || "System Admin",
+    userName: l.user?.name || "System Executive",
     userRole: l.user?.role || "ADMIN",
     action: l.action,
     entity: l.entityType,
@@ -83,7 +25,7 @@ export default async function AdminAuditPage() {
     prevValue: l.prevValue || "—",
     newValue: l.newValue || "—",
     createdAt: l.createdAt
-  })) : sampleLogs;
+  }));
 
   return (
     <div className="space-y-8">
@@ -114,33 +56,41 @@ export default async function AdminAuditPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {displayLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="p-4">
-                    <div className="font-bold text-slate-900">{log.userName}</div>
-                    <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">
-                      {log.userRole}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <div className="font-semibold text-blue-700">{log.action}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{log.details}</div>
-                  </td>
-                  <td className="p-4">
-                    <span className="text-xs font-mono bg-red-50 text-red-700 px-2 py-1 rounded border border-red-200 block w-fit">
-                      {log.prevValue}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded border border-emerald-200 block w-fit font-bold">
-                      {log.newValue}
-                    </span>
-                  </td>
-                  <td className="p-4 text-xs text-slate-500 font-mono whitespace-nowrap">
-                    {new Date(log.createdAt).toLocaleString()}
+              {displayLogs.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="p-8 text-center text-slate-500 text-xs">
+                    No activity logs recorded yet. All administrative, leadership, and operational actions are audited here.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                displayLogs.map((log) => (
+                  <tr key={log.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4">
+                      <div className="font-bold text-slate-900">{log.userName}</div>
+                      <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">
+                        {log.userRole}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <div className="font-semibold text-blue-700">{log.action}</div>
+                      <div className="text-xs text-slate-500 mt-0.5">{log.details}</div>
+                    </td>
+                    <td className="p-4">
+                      <span className="text-xs font-mono bg-red-50 text-red-700 px-2 py-1 rounded border border-red-200 block w-fit">
+                        {log.prevValue}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded border border-emerald-200 block w-fit font-bold">
+                        {log.newValue}
+                      </span>
+                    </td>
+                    <td className="p-4 text-xs text-slate-500 font-mono whitespace-nowrap">
+                      {new Date(log.createdAt).toLocaleString()}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
