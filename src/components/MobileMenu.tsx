@@ -32,13 +32,10 @@ export default function MobileMenu() {
           <Link href="/verify" onClick={() => setIsOpen(false)} className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">Verify Digital ID</Link>
           
           <div className="border-t border-slate-700 pt-3 mt-2 flex flex-col gap-2">
-            <Link href="/portal/member" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors text-blue-300 font-bold border border-slate-700 text-xs">
-              Member Workspace & Task Board
+            <Link href="/auth/login" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition shadow-md">
+              Sign In (Student / Leader / Ambassador / Admin) &rarr;
             </Link>
-            <Link href="/portal/department" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors text-emerald-300 font-bold border border-slate-700 text-xs">
-              Department Leader & Reviewer Console
-            </Link>
-            <Link href="/apply" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
+            <Link href="/apply" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
               Apply Now
             </Link>
             <Link href="/admin/dashboard" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors text-white font-bold border border-slate-700 text-xs">

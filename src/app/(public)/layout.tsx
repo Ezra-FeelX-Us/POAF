@@ -25,20 +25,21 @@ export default function PublicLayout({
         <Link href="/members" className="hover:text-blue-400 transition-colors">Members</Link>
         <Link href="/leadership" className="hover:text-blue-400 transition-colors">Leadership</Link>
         <Link href="/nations" className="hover:text-blue-400 transition-colors">Nations</Link>
-        <Link href="/grades" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">Grade Board</Link>
         <Link href="/departments" className="hover:text-blue-400 transition-colors">Departments</Link>
-        <Link href="/partners" className="hover:text-blue-400 transition-colors">Partners</Link>
+        <Link href="/partners" className="hover:text-blue-400 transition-colors">Official Partners</Link>
         <Link href="/projects" className="hover:text-blue-400 transition-colors">Projects</Link>
+        <Link href="/grades" className="text-amber-400 hover:text-amber-300 font-bold transition-colors">Grade Board</Link>
         <Link href="/verify" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">
           Verify ID
         </Link>
       </div>
+
       <div className="hidden lg:flex gap-2 items-center">
-        <Link href="/portal/member" className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 rounded-xl text-xs font-bold transition border border-slate-700">
-          Member Portal
-        </Link>
         <Link href="/apply" className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
           Apply Now
+        </Link>
+        <Link href="/auth/login" className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1">
+          Sign In &rarr;
         </Link>
         <Link href="/admin/dashboard" className="px-3 py-1.5 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors text-xs font-bold border border-slate-700 text-slate-300">
           Admin
