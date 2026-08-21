@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
-// 1. Promote / Shift Member Role within Department
+// 1. Promote / Shift Member Role within Department (Leader Authority)
 export async function promoteMemberAction(formData: FormData) {
   const session = await getServerSession(authOptions);
   const memberId = formData.get("memberId") as string;
@@ -51,7 +51,7 @@ export async function promoteMemberAction(formData: FormData) {
   revalidatePath("/leadership");
 }
 
-// 2. Student Leader: Rate Student (1-100) & Strength Badge
+// 2. Student Leader: Rate Student (1-100) & Assign Strength Badge
 export async function rateStudentAction(formData: FormData) {
   const session = await getServerSession(authOptions);
   const memberId = formData.get("memberId") as string;
@@ -87,7 +87,43 @@ export async function rateStudentAction(formData: FormData) {
   revalidatePath("/classroom");
 }
 
-// 3. Department Manager: GitHub-style Project Create & Update
+// 3. Student Leader: Gradual Student Upgrade to Assistant
+export async function upgradeStudentToAssistantAction(formData: FormData) {
+  const session = await getServerSession(authOptions);
+  const memberId = formData.get("memberId") as string;
+  const committeeAssignment = formData.get("committee") as string || "Operational Taskforce";
+
+  if (!memberId) throw new Error("Member ID is required");
+
+  await prisma.member.update({
+    where: { id: memberId },
+    data: {
+      role: "Department Assistant",
+      leaderPosition: "Department Assistant",
+      isLeader: true,
+      skills: `Promoted Assistant (${committeeAssignment})`,
+      roles: `MEMBER,DEPARTMENT_LEADER`
+    }
+  });
+
+  try {
+    await prisma.activityLog.create({
+      data: {
+        userId: (session?.user as any)?.id || null,
+        action: "GRADUAL_STUDENT_UPGRADE",
+        entityType: "MEMBER",
+        entityId: memberId,
+        details: `Student Leader upgraded student to Department Assistant in ${committeeAssignment}.`
+      }
+    });
+  } catch (e) {}
+
+  revalidatePath("/staff");
+  revalidatePath("/classroom");
+  revalidatePath("/departments");
+}
+
+// 4. Department Manager: GitHub-style Project Create & Update
 export async function saveProjectAction(formData: FormData) {
   const session = await getServerSession(authOptions);
   const projectId = formData.get("projectId") as string;
@@ -142,7 +178,7 @@ export async function saveProjectAction(formData: FormData) {
   revalidatePath("/classroom");
 }
 
-// 4. Department Manager: Review & Grade Deliverables
+// 5. Department Manager: Review & Grade Deliverables
 export async function reviewDeliverableAction(formData: FormData) {
   const session = await getServerSession(authOptions);
   const taskId = formData.get("taskId") as string;
@@ -179,7 +215,7 @@ export async function reviewDeliverableAction(formData: FormData) {
   revalidatePath("/classroom");
 }
 
-// 5. Department Secretary: Meeting Minutes & Public Announcement
+// 6. Department Secretary: Meeting Minutes & Public Announcement
 export async function recordMinutesAndAnnouncementAction(formData: FormData) {
   const session = await getServerSession(authOptions);
   const departmentId = formData.get("departmentId") as string;

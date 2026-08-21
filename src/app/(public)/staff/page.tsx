@@ -5,6 +5,7 @@ import { createTaskAction } from "@/actions/tasks";
 import { 
   promoteMemberAction, 
   rateStudentAction, 
+  upgradeStudentToAssistantAction,
   saveProjectAction, 
   reviewDeliverableAction, 
   recordMinutesAndAnnouncementAction 
@@ -17,11 +18,10 @@ export const dynamic = "force-dynamic";
 export default async function StaffPortalPage({
   searchParams
 }: {
-  searchParams?: Promise<{ view?: string; chat?: string }>;
+  searchParams?: Promise<{ view?: string }>;
 }) {
   const params = await searchParams;
   const activeView = params?.view || "leader"; // leader | manager | student_leader | secretary | assistant
-  const activeChat = params?.chat || "assembly"; // leadership | assembly
 
   const portalRes = await resolveCurrentUserPortals();
 
@@ -92,10 +92,10 @@ export default async function StaffPortalPage({
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="text-xs font-black uppercase tracking-wider text-indigo-400 bg-indigo-950 px-3 py-1 rounded-full border border-indigo-800">
-                Staff Department Console
+                International Administrative Console
               </span>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
-                5-Tier Leadership Operations
+                5-Tier Operational Hierarchy
               </span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">{currentDept.name}</h1>
@@ -121,7 +121,7 @@ export default async function StaffPortalPage({
         {/* 5-Tier Role Hierarchy Navigation Switcher */}
         <div className="bg-slate-900 border border-slate-800 p-2 rounded-2xl">
           <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1.5 mb-1">
-            Department Leadership Dashboards:
+            Role Responsibility & Operating Console:
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-bold">
             <Link
@@ -133,7 +133,7 @@ export default async function StaffPortalPage({
               }`}
             >
               <span className="text-sm font-black">👑 Leader</span>
-              <span className="text-[10px] opacity-80">Tasks & Promotions</span>
+              <span className="text-[10px] opacity-80">Directives & Promotions</span>
             </Link>
 
             <Link
@@ -157,7 +157,7 @@ export default async function StaffPortalPage({
               }`}
             >
               <span className="text-sm font-black">🎓 Student Leader</span>
-              <span className="text-[10px] opacity-80">1–100 Ratings & Chat</span>
+              <span className="text-[10px] opacity-80">1–100 Ratings & Upgrades</span>
             </Link>
 
             <Link
@@ -176,7 +176,7 @@ export default async function StaffPortalPage({
               href="/staff?view=assistant"
               className={`p-3 rounded-xl transition text-center flex flex-col items-center justify-center gap-1 ${
                 activeView === "assistant" 
-                  ? "bg-blue-600 text-white shadow-lg" 
+                  ? "bg-cyan-600 text-white shadow-lg" 
                   : "bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white"
               }`}
             >
@@ -189,30 +189,30 @@ export default async function StaffPortalPage({
         {/* ---------------- 1. DEPARTMENT LEADER VIEW ---------------- */}
         {activeView === "leader" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Task Giver */}
+            {/* Task Giver Directive Station */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
                 <div className="border-b border-slate-800 pb-4">
                   <span className="text-xs font-black uppercase tracking-wider text-indigo-400 bg-indigo-950 px-2.5 py-1 rounded-full border border-indigo-800">
-                    Authority: Department Leader
+                    Highest Division Authority
                   </span>
-                  <h2 className="text-xl font-black text-white mt-2">Issue New Division Task Directive</h2>
-                  <p className="text-xs text-slate-400">Broadcast deliverables to manager, student leader, secretary, assistants, or all members.</p>
+                  <h2 className="text-xl font-black text-white mt-2">Issue Strategic Task Directive</h2>
+                  <p className="text-xs text-slate-400">Broadcast official deliverables and milestones to all division tiers.</p>
                 </div>
 
                 <form action={createTaskAction} className="space-y-4">
                   <input type="hidden" name="departmentId" value={currentDept.id} />
                   <div>
-                    <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Task Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. Conduct Secondary School Outreach in Bole" className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+                    <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Directive Title *</label>
+                    <input type="text" name="title" required placeholder="e.g. Conduct Secondary School Tech Survey in Addis Ababa" className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Detailed Instructions & Scope *</label>
-                    <textarea name="description" rows={3} required placeholder="State exact deliverables, survey questions, or technical deliverables required..." className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none" />
+                    <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Executive Instructions & Blueprint *</label>
+                    <textarea name="description" rows={3} required placeholder="State exact deliverables, target research metrics, or software architecture required..." className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none" />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Target Assignee Role</label>
+                      <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Target Assignee Scope</label>
                       <select name="assigneeRole" className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500">
                         <option value="ALL">All Division Members & Assistants</option>
                         <option value="MANAGER">Department Manager</option>
@@ -227,16 +227,16 @@ export default async function StaffPortalPage({
                     </div>
                   </div>
                   <button type="submit" className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg transition">
-                    Issue Task to Division &rarr;
+                    Broadcast Directive to Division &rarr;
                   </button>
                 </form>
               </div>
 
               {/* Task List */}
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
-                <h3 className="text-lg font-black text-white">Active Department Directives ({departmentTasks.length})</h3>
+                <h3 className="text-lg font-black text-white">Active Directives & Directives Ledger ({departmentTasks.length})</h3>
                 {departmentTasks.length === 0 ? (
-                  <p className="text-xs text-slate-500 py-6 text-center">No tasks issued yet. Create your first directive above.</p>
+                  <p className="text-xs text-slate-500 py-6 text-center">No directives issued yet.</p>
                 ) : (
                   <div className="space-y-3">
                     {departmentTasks.map((t) => (
@@ -261,9 +261,9 @@ export default async function StaffPortalPage({
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
                 <div className="border-b border-slate-800 pb-3">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-800">
-                    Internal Promotion
+                    Leader Authority
                   </span>
-                  <h3 className="text-lg font-black text-white mt-2">Promote Department Pioneer</h3>
+                  <h3 className="text-lg font-black text-white mt-2">Promote Division Pioneer</h3>
                   <p className="text-xs text-slate-400">Shift verified members into leadership roles without external application.</p>
                 </div>
 
@@ -294,9 +294,9 @@ export default async function StaffPortalPage({
                 </form>
               </div>
 
-              {/* Department Active Roster */}
+              {/* Department Roster */}
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">Department Leadership Roster</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">Department Leadership Tiers</h4>
                 <div className="space-y-2 max-h-60 overflow-y-auto">
                   {membersList.map((m) => (
                     <div key={m.id} className="bg-slate-800/40 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
@@ -318,7 +318,7 @@ export default async function StaffPortalPage({
         {/* ---------------- 2. DEPARTMENT MANAGER VIEW ---------------- */}
         {activeView === "manager" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* GitHub-style Project Management Hub */}
+            {/* GitHub-style Project Execution Hub */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
                 <div className="border-b border-slate-800 pb-3">
@@ -417,15 +417,15 @@ export default async function StaffPortalPage({
                           <span className="text-[9px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded uppercase border border-amber-800">Submitted</span>
                         </div>
                         <p className="text-[11px] text-slate-300">By: {task.assignee?.firstName} {task.assignee?.lastName}</p>
-                        {task.deliverableUrl && (
+                        {task.submissionLink && (
                           <div className="bg-slate-950 p-2.5 rounded-xl text-xs font-mono text-blue-400 truncate border border-slate-800">
-                            📎 {task.deliverableUrl}
+                            📎 {task.submissionLink}
                           </div>
                         )}
                         <form action={reviewDeliverableAction} className="space-y-2 pt-2 border-t border-slate-700">
                           <input type="hidden" name="taskId" value={task.id} />
                           <div className="grid grid-cols-2 gap-2">
-                            <input type="text" name="grade" defaultValue="A" placeholder="Grade (A/B/C)" className="bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white" />
+                            <input type="text" name="grade" defaultValue="95" placeholder="Score (1-100)" className="bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white" />
                             <button type="submit" className="py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition">
                               Approve & Archive
                             </button>
@@ -444,15 +444,17 @@ export default async function StaffPortalPage({
         {/* ---------------- 3. STUDENT LEADER VIEW ---------------- */}
         {activeView === "student_leader" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Student 1-100 Performance & Strength Rating */}
+            {/* Student 1-100 Performance Rating & Gradual Upgrade */}
             <div className="lg:col-span-2 space-y-6">
+              
+              {/* Rating Station */}
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
                 <div className="border-b border-slate-800 pb-3">
                   <span className="text-xs font-black uppercase tracking-wider text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">
                     Student Voice & Performance Hub
                   </span>
                   <h2 className="text-xl font-black text-white mt-2">Rate Department Student (1–100)</h2>
-                  <p className="text-xs text-slate-400">Evaluate peer participation, assign strength badges, and record attendance.</p>
+                  <p className="text-xs text-slate-400">Evaluate peer participation, assign strength badges, and provide mentorship feedback.</p>
                 </div>
 
                 <form action={rateStudentAction} className="space-y-4">
@@ -495,7 +497,46 @@ export default async function StaffPortalPage({
                 </form>
               </div>
 
-              {/* Student Attendance & Roster List */}
+              {/* Gradual Student Upgrade to Assistant */}
+              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-5">
+                <div className="border-b border-slate-800 pb-3">
+                  <span className="text-xs font-black uppercase tracking-wider text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-full border border-cyan-800">
+                    Gradual Peer Promotion
+                  </span>
+                  <h2 className="text-xl font-black text-white mt-2">Upgrade Student to Department Assistant</h2>
+                  <p className="text-xs text-slate-400">Promote active, consistent student members into assistant leadership taskforces.</p>
+                </div>
+
+                <form action={upgradeStudentToAssistantAction} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Select Member *</label>
+                      <select name="memberId" required className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-cyan-500">
+                        {membersList.filter(m => m.role === "Member" || !m.isLeader).map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.firstName} {m.lastName} ({m.poafId})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Taskforce Assignment *</label>
+                      <select name="committee" className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-cyan-500">
+                        <option value="Field Research Taskforce">Field Research Taskforce</option>
+                        <option value="Campus & Student Outreach">Campus & Student Outreach</option>
+                        <option value="Technical Lab & Hackathons">Technical Lab & Hackathons</option>
+                        <option value="Media & Communications">Media & Communications</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button type="submit" className="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs rounded-xl shadow-lg transition">
+                    Promote to Department Assistant &rarr;
+                  </button>
+                </form>
+              </div>
+
+              {/* Student Standing Roster */}
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
                 <h3 className="text-lg font-black text-white">Student Standing Roster ({membersList.length})</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -506,7 +547,7 @@ export default async function StaffPortalPage({
                         <span className="text-[10px] text-slate-400">{m.skills || "Pioneer Member"}</span>
                       </div>
                       <span className="text-xs font-black text-emerald-400 bg-emerald-950 px-2 py-1 rounded-lg border border-emerald-800">
-                        {m.ratingScore || 88}/100
+                        {m.totalPoints ? Math.round(m.totalPoints / 10) : 88}/100
                       </span>
                     </div>
                   ))}
@@ -577,10 +618,6 @@ export default async function StaffPortalPage({
                     <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">Minutes, Decisions & Action Items *</label>
                     <textarea name="content" rows={4} required placeholder="1. Attendance: Ezra, Ali, Lydia...&#10;2. Key Decision: Deploy offline digital hubs...&#10;3. Action Item: Submit final blueprints by Friday." className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none font-mono" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <input type="checkbox" name="isPublic" value="true" id="isPublic" className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 bg-slate-950 border-slate-700" />
-                    <label htmlFor="isPublic" className="text-xs text-slate-300 font-bold">Publish directly to organization public homepage notice board</label>
-                  </div>
                   <button type="submit" className="w-full py-3.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-lg transition">
                     Publish Minutes & Announcements &rarr;
                   </button>
@@ -613,11 +650,11 @@ export default async function StaffPortalPage({
         {activeView === "assistant" && (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
             <div className="border-b border-slate-800 pb-4">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-400 bg-blue-950 px-2.5 py-1 rounded-full border border-blue-800">
+              <span className="text-xs font-black uppercase tracking-wider text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-full border border-cyan-800">
                 Action Items & Deliverables
               </span>
               <h2 className="text-xl font-black text-white mt-2">Department Assistant Dashboard</h2>
-              <p className="text-xs text-slate-400">Execute assigned supervisor action items and upload static documentation deliverables.</p>
+              <p className="text-xs text-slate-400">Execute assigned supervisor action items and submit deliverables directly for review.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -637,7 +674,7 @@ export default async function StaffPortalPage({
               <div className="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 space-y-3">
                 <h3 className="font-bold text-white text-sm">Submit Completed Deliverable</h3>
                 <p className="text-xs text-slate-400">Provide document link or static PDF archive for Department Manager review.</p>
-                <Link href="/classroom" className="inline-block mt-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition">
+                <Link href="/classroom" className="inline-block mt-2 px-5 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs rounded-xl shadow transition">
                   Open Classroom Submission Console &rarr;
                 </Link>
               </div>
