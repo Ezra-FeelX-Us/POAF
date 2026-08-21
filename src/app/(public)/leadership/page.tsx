@@ -81,54 +81,49 @@ export default async function LeadershipPage() {
   ];
 
   return (
-    <div 
-      className="min-h-screen bg-cover bg-fixed bg-center relative font-serif italic text-slate-900"
-      style={{ backgroundImage: "url('/images/media_1787223427061.png')" }}
-    >
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]"></div>
-
+    <div className="min-h-screen bg-slate-900 text-slate-100 relative font-serif italic">
       {/* Header */}
       <div 
-        className="py-24 px-6 text-center bg-cover bg-center relative z-10"
+        className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
         style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}
       >
-        <div className="absolute inset-0 bg-blue-950/85"></div>
-        <div className="relative z-10 text-white max-w-4xl mx-auto animate-[slideIn_1s_ease-out]">
-          <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-4 border border-blue-400/30">
+        <div className="absolute inset-0 bg-blue-950/90"></div>
+        <div className="relative z-10 text-white max-w-4xl mx-auto">
+          <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-3 border border-blue-400/30">
             Governance & Executive Roster
           </div>
-          <h1 className="text-4xl md:text-6xl font-black mb-4">Official Leadership Board</h1>
-          <p className="text-base md:text-lg text-blue-200 max-w-2xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-black mb-3">Official Leadership Board</h1>
+          <p className="text-sm md:text-base text-blue-200 max-w-2xl mx-auto">
             The visionary executives, national ambassadors, department heads, and chapter leaders guiding our pan-African youth movement.
           </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-16 max-w-7xl relative z-20 -mt-12 space-y-20">
+      <div className="container mx-auto px-4 sm:px-6 py-12 max-w-7xl relative z-20 space-y-16">
 
         {/* 1. Co-Founders & Executive Council */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase tracking-widest">
               Executive Presidency
             </span>
-            <h2 className="text-3xl font-black text-slate-900 mt-3">Founder & Executive Council</h2>
-            <p className="text-slate-600 text-sm mt-1">Guiding overall vision, strategic alliances, and institutional integrity.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Founder & Executive Council</h2>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Guiding overall vision, strategic alliances, and institutional integrity.</p>
           </div>
 
-          <div className="grid grid-cols-1 max-w-2xl mx-auto gap-8">
+          <div className="grid grid-cols-1 max-w-2xl mx-auto gap-6">
             {coFounders.map((founder, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-md flex flex-col sm:flex-row items-center gap-8 text-center sm:text-left">
+              <div key={i} className="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                 <div 
-                  className="w-40 h-40 rounded-2xl bg-cover bg-center shadow-lg border-4 border-amber-400 shrink-0"
+                  className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl bg-cover bg-center shadow-md border-4 border-amber-400 shrink-0"
                   style={{ backgroundImage: `url('${founder.img}')` }}
                 ></div>
                 <div>
-                  <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     {founder.department}
                   </span>
-                  <h3 className="text-2xl font-black text-slate-900 mt-2">{founder.name}</h3>
-                  <p className="text-sm font-bold text-blue-600 mb-3">{founder.role}</p>
+                  <h3 className="text-xl font-black text-slate-900 mt-1.5">{founder.name}</h3>
+                  <p className="text-xs sm:text-sm font-bold text-blue-600 mb-2">{founder.role}</p>
                   <p className="text-xs text-slate-600 leading-relaxed">{founder.bio}</p>
                 </div>
               </div>
@@ -136,26 +131,26 @@ export default async function LeadershipPage() {
           </div>
         </section>
 
-        {/* 2. National Ambassadors */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+        {/* 2. National Ambassadors - 5 Columns */}
+        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 uppercase tracking-widest">
               Diplomatic Network
             </span>
-            <h2 className="text-3xl font-black text-slate-900 mt-3">National Ambassadors</h2>
-            <p className="text-slate-600 text-sm mt-1">Representing POAF sovereign student chapters across African nations.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">National Ambassadors</h2>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Representing POAF sovereign student chapters across African nations.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {nationalAmbassadors.map((amb, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 shadow hover:shadow-xl transition-all text-center group">
+              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-28 h-28 mx-auto rounded-full bg-cover bg-center shadow-md border-4 border-slate-200 group-hover:scale-105 transition-transform mb-4"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${amb.img}')` }}
                 ></div>
-                <h4 className="font-black text-slate-900 text-sm md:text-base group-hover:text-blue-600 transition-colors">{amb.name}</h4>
-                <p className="text-xs font-bold text-blue-600 mt-0.5">{amb.role}</p>
-                <span className="inline-block mt-2 text-[10px] font-bold text-slate-500 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors line-clamp-1 leading-snug">{amb.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-blue-600 mt-0.5 line-clamp-1">{amb.role}</p>
+                <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
                   {amb.country}
                 </span>
               </div>
@@ -163,26 +158,26 @@ export default async function LeadershipPage() {
           </div>
         </section>
 
-        {/* 3. Department Leaders */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+        {/* 3. Department Leaders - 5 Columns */}
+        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-widest">
               Department Operations
             </span>
-            <h2 className="text-3xl font-black text-slate-900 mt-3">Department Leaders</h2>
-            <p className="text-slate-600 text-sm mt-1">Leading specialized divisions in outreach, technology, debate, research, and youth empowerment.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Department Leaders</h2>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Leading specialized divisions in outreach, technology, debate, research, and youth empowerment.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {departmentLeaders.map((ldr, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 shadow hover:shadow-xl transition-all text-center group">
+              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-28 h-28 mx-auto rounded-full bg-cover bg-center shadow-md border-4 border-slate-200 group-hover:scale-105 transition-transform mb-4"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${ldr.img}')` }}
                 ></div>
-                <h4 className="font-black text-slate-900 text-sm md:text-base group-hover:text-emerald-600 transition-colors">{ldr.name}</h4>
-                <p className="text-xs font-bold text-blue-600 mt-0.5">{ldr.role}</p>
-                <span className="inline-block mt-2 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-600 transition-colors line-clamp-1 leading-snug">{ldr.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-blue-600 mt-0.5 line-clamp-1">{ldr.role}</p>
+                <span className="inline-block mt-1.5 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 line-clamp-1">
                   {ldr.dept}
                 </span>
               </div>
@@ -190,26 +185,26 @@ export default async function LeadershipPage() {
           </div>
         </section>
 
-        {/* 4. Project Leaders & Managers */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+        {/* 4. Project Leaders & Managers - 5 Columns */}
+        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-200 uppercase tracking-widest">
               Engineering & Execution
             </span>
-            <h2 className="text-3xl font-black text-slate-900 mt-3">Project Leaders & Managers</h2>
-            <p className="text-slate-600 text-sm mt-1">Driving technological prototypes, community surveys, and laboratory execution.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Project Leaders & Managers</h2>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Driving technological prototypes, community surveys, and laboratory execution.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {projectManagers.map((mgr, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 shadow hover:shadow-xl transition-all text-center group">
+              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-28 h-28 mx-auto rounded-full bg-cover bg-center shadow-md border-4 border-slate-200 group-hover:scale-105 transition-transform mb-4"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${mgr.img}')` }}
                 ></div>
-                <h4 className="font-black text-slate-900 text-sm md:text-base group-hover:text-purple-600 transition-colors">{mgr.name}</h4>
-                <p className="text-xs font-bold text-purple-600 mt-0.5">{mgr.role}</p>
-                <span className="inline-block mt-2 text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200">
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-600 transition-colors line-clamp-1 leading-snug">{mgr.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-purple-600 mt-0.5 line-clamp-1">{mgr.role}</p>
+                <span className="inline-block mt-1.5 text-[9px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200 line-clamp-1">
                   {mgr.dept}
                 </span>
               </div>
@@ -217,25 +212,25 @@ export default async function LeadershipPage() {
           </div>
         </section>
 
-        {/* 5. Secretaries & Student Leaders */}
-        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+        {/* 5. Secretaries & Student Leaders - 5 Columns */}
+        <section className="bg-white/95 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-white/20 text-slate-900">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase tracking-widest">
               Campus Governance
             </span>
-            <h2 className="text-3xl font-black text-slate-900 mt-3">Secretaries & Student Leaders</h2>
-            <p className="text-slate-600 text-sm mt-1">Coordinating documentation, debate forums, and secondary school chapters.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-2">Secretaries & Student Leaders</h2>
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">Coordinating documentation, debate forums, and secondary school chapters.</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {studentLeaders.map((st, i) => (
-              <div key={i} className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group">
+              <div key={i} className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 shadow hover:shadow-lg transition-all text-center group flex flex-col items-center">
                 <div 
-                  className="w-20 h-20 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-3"
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-cover bg-center shadow border-2 border-slate-200 group-hover:scale-105 transition-transform mb-2.5"
                   style={{ backgroundImage: `url('${st.img}')` }}
                 ></div>
-                <h4 className="font-bold text-slate-900 text-xs md:text-sm group-hover:text-blue-600 transition-colors">{st.name}</h4>
-                <p className="text-[10px] font-bold text-amber-600 mt-0.5">{st.role}</p>
+                <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors line-clamp-1 leading-snug">{st.name}</h4>
+                <p className="text-[10px] sm:text-xs font-semibold text-amber-600 mt-0.5 line-clamp-1">{st.role}</p>
               </div>
             ))}
           </div>

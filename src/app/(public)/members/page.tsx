@@ -126,8 +126,8 @@ export default async function MembersPage({
           </div>
         </div>
 
-        {/* Member Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {/* Member Grid - 6 Columns */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {membersToDisplay.map((m, idx) => (
             <MemberCard 
               key={idx}
@@ -144,14 +144,14 @@ export default async function MembersPage({
 
 function MemberCard({ name, department, img }: { name: string, department: string, img: string }) {
   return (
-    <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border border-white/30 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all group flex flex-col">
+    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-md border border-white/30 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col">
       <div 
-        className="w-full h-64 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+        className="w-full h-40 sm:h-44 md:h-48 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
         style={{ backgroundImage: `url('${img}')` }}
       />
-      <div className="p-6 text-center">
-        <h3 className="text-lg font-black text-slate-900 mb-1">{name}</h3>
-        <p className="text-xs font-bold text-blue-700">{department}</p>
+      <div className="p-3 text-center">
+        <h3 className="text-xs sm:text-sm font-bold text-slate-900 mb-0.5 leading-snug line-clamp-1">{name}</h3>
+        <p className="text-[10px] sm:text-xs font-semibold text-blue-700 leading-tight line-clamp-1">{department}</p>
       </div>
     </div>
   );
