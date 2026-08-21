@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
+import DesktopModeToggle from "@/components/DesktopModeToggle";
 
 export default function PublicLayout({
  children,
@@ -19,7 +20,7 @@ export default function PublicLayout({
  
  <MobileMenu />
 
-      <div className="hidden lg:flex gap-6 font-semibold text-xs xl:text-sm items-center">
+      <div className="hidden lg:flex gap-5 font-semibold text-xs xl:text-sm items-center">
         <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
         <Link href="/about" className="hover:text-blue-400 transition-colors">About</Link>
         <Link href="/members" className="hover:text-blue-400 transition-colors">Members</Link>
@@ -30,6 +31,7 @@ export default function PublicLayout({
         <Link href="/verify" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1">
           Verify ID
         </Link>
+        <DesktopModeToggle />
       </div>
  <div className="hidden lg:flex gap-3 items-center">
  <Link href="/apply" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
