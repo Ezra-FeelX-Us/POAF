@@ -35,16 +35,16 @@ export default async function PublicLayout({
           
           <MobileMenu portalInfo={mobilePortalInfo} />
 
-          <div className="hidden lg:flex gap-5 xl:gap-6 font-semibold text-xs xl:text-sm items-center">
+          <div className="hidden lg:flex gap-4 xl:gap-5 font-semibold text-xs xl:text-sm items-center">
             <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
             <Link href="/about" className="hover:text-blue-400 transition-colors">About</Link>
-            <Link href="/members" className="hover:text-blue-400 transition-colors">Members</Link>
+            <Link href="/members" className="hover:text-blue-400 transition-colors">Membership</Link>
             <Link href="/leadership" className="hover:text-blue-400 transition-colors">Leadership</Link>
             <Link href="/departments" className="hover:text-blue-400 transition-colors">Departments</Link>
+            <Link href="/partners" className="hover:text-blue-400 transition-colors">Official Partners</Link>
             <Link href="/projects" className="hover:text-blue-400 transition-colors">Projects</Link>
-            <Link href="/competition" className="hover:text-blue-400 transition-colors">Competition</Link>
-            <Link href="/partners" className="hover:text-blue-400 transition-colors">Partners</Link>
-            <Link href="/contact" className="hover:text-blue-400 transition-colors">Contact</Link>
+            <Link href="/apply" className="hover:text-blue-400 transition-colors font-bold text-blue-300">Apply</Link>
+            <Link href="/verify" className="hover:text-emerald-400 transition-colors text-emerald-400 font-bold">Verify ID</Link>
           </div>
 
           <div className="hidden lg:flex items-center">
