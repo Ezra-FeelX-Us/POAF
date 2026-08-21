@@ -139,13 +139,16 @@ export default async function DepartmentsPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div 
-        className="py-24 px-6 text-center bg-cover bg-center relative"
+        className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative"
         style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}
       >
-        <div className="absolute inset-0 bg-blue-900/80"></div>
-        <div className="relative z-10 text-white animate-[slideIn_1s_ease-out]">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">POAF Departments</h1>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
+        <div className="absolute inset-0 bg-blue-950/90"></div>
+        <div className="relative z-10 text-white">
+          <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-3 border border-blue-400/30">
+            Organizational Divisions
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black mb-3">POAF Continental Departments</h1>
+          <p className="text-sm md:text-base text-blue-200 max-w-2xl mx-auto">
             Discover the specialized divisions that drive our mission, meet their leaders, and explore their active initiatives.
           </p>
         </div>
