@@ -42,13 +42,16 @@ export default function AdminLayout({
  <span></span> Partner Organizations
  </Link>
 
- <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-5 mb-2">Submissions & Security</p>
- <Link href="/admin/applications" className="flex items-center gap-3 px-4 py-2.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all font-semibold text-sm">
- <span></span> Applications Inbox
- </Link>
- <Link href="/admin/audit" className="flex items-center gap-3 px-4 py-2.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all font-semibold text-sm">
- <span>️</span> Audit & Governance Logs
- </Link>
+  <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-5 mb-2">Submissions & Database</p>
+  <Link href="/admin/database" className="flex items-center gap-3 px-4 py-2.5 text-blue-400 hover:bg-slate-800 hover:text-white rounded-xl transition-all font-bold text-sm">
+    <span>🗄️</span> Database Studio (Tables)
+  </Link>
+  <Link href="/admin/applications" className="flex items-center gap-3 px-4 py-2.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all font-semibold text-sm">
+    <span>📥</span> Applications Review
+  </Link>
+  <Link href="/admin/audit" className="flex items-center gap-3 px-4 py-2.5 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all font-semibold text-sm">
+    <span>🛡️</span> Audit & Governance Logs
+  </Link>
 
  <div className="pt-6 border-t border-slate-800 mt-5">
  <Link href="/" className="px-4 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all text-sm flex items-center gap-2 font-bold">

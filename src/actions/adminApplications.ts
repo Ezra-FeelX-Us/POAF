@@ -12,70 +12,133 @@ export async function processApplication(formData: FormData) {
   const app = await prisma.application.findUnique({ where: { id } });
   if (!app) throw new Error("Application not found");
 
-  // If status is ACCEPTED, we do auto-provisioning
+  // If status is ACCEPTED, we do full explicit provisioning with no assumed defaults
   if (newStatus === "ACCEPTED" && app.status !== "ACCEPTED") {
     const payload = JSON.parse(app.payload || "{}");
-    const assignedRole = (formData.get("assignedRole") as string) || (app.type === "LEADERSHIP" ? "Department Leader" : "Member");
-    const departmentId = (formData.get("departmentId") as string) || payload.departmentId || undefined;
-    const isLeaderFlag = formData.get("isLeader") === "true" || assignedRole !== "Member" || app.type === "LEADERSHIP";
     
+    // Explicit Admin-provided values (Admin fills or overrides everything)
+    const firstName = (formData.get("firstName") as string) || payload.firstName || payload.fullName?.split(" ")[0] || "";
+    const lastName = (formData.get("lastName") as string) || payload.lastName || payload.fullName?.split(" ").slice(1).join(" ") || "";
+    const email = (formData.get("email") as string) || payload.email || undefined;
+    const phone = (formData.get("phone") as string) || payload.phone || undefined;
+    const customPoafId = (formData.get("poafId") as string) || await generatePoafId(formData.get("assignedRole")?.toString().includes("Leader") ? "LDR" : "MEM");
+    const assignedRole = (formData.get("assignedRole") as string) || "Member";
+    const leaderPosition = (formData.get("leaderPosition") as string) || undefined;
+    const departmentId = (formData.get("departmentId") as string) || undefined;
+    const countryId = (formData.get("countryId") as string) || payload.countryId || (await prisma.country.findFirst())?.id || "";
+    const photoUrl = (formData.get("photoUrl") as string) || app.photoUrl || payload.photoUrl || undefined;
+    const bio = (formData.get("bio") as string) || payload.bio || payload.statement || undefined;
+    const skills = (formData.get("skills") as string) || payload.skills || undefined;
+    const customInviteCode = (formData.get("inviteCode") as string) || customPoafId.replace("POAF-", "");
+    
+    // Explicit Display destinations chosen by Admin
+    const displayOnMembersBoard = formData.get("displayOnMembersBoard") === "true";
+    const displayOnLeadershipBoard = formData.get("displayOnLeadershipBoard") === "true";
+    const displayOnHomepage = formData.get("displayOnHomepage") === "true";
+    const displayOnDepartmentRoster = formData.get("displayOnDepartmentRoster") === "true";
+    const isLeader = displayOnLeadershipBoard || assignedRole !== "Member";
+    const invitedBy = payload.invitedBy || payload.ref || (formData.get("invitedBy") as string) || undefined;
+
     if (app.type === "MEMBERSHIP" || app.type === "LEADERSHIP") {
-      const prefix = isLeaderFlag ? "LDR" : "MEM";
-      const poafId = await generatePoafId(prefix);
-      
       const member = await prisma.member.create({
         data: {
-          poafId,
-          firstName: payload.firstName || payload.fullName?.split(" ")[0] || "New",
-          lastName: payload.lastName || payload.fullName?.split(" ").slice(1).join(" ") || "Pioneer",
-          email: payload.email || undefined,
+          poafId: customPoafId,
+          firstName,
+          lastName,
+          email,
+          phone,
           role: assignedRole,
-          isLeader: isLeaderFlag,
-          leaderPosition: payload.position || (isLeaderFlag ? assignedRole : undefined),
+          leaderPosition,
+          isLeader,
           departmentId: departmentId || undefined,
-          status: "ACTIVE",
-          countryId: payload.countryId || (await prisma.country.findFirst())?.id || "",
-          photoUrl: app.photoUrl || payload.photoUrl || undefined
+          countryId,
+          photoUrl,
+          bio,
+          skills,
+          inviteCode: customInviteCode,
+          invitedBy,
+          displayOnMembersBoard,
+          displayOnLeadershipBoard,
+          displayOnHomepage,
+          displayOnDepartmentRoster,
+          status: "ACTIVE"
         }
       });
 
-      // Upgrade User Account Role if linked
+      // Track referral counter: If applicant was invited, increment the inviter's inviteCount
+      if (invitedBy) {
+        try {
+          await prisma.member.updateMany({
+            where: {
+              OR: [
+                { inviteCode: invitedBy },
+                { poafId: invitedBy },
+                { email: invitedBy }
+              ]
+            },
+            data: { inviteCount: { increment: 1 } }
+          });
+        } catch (refErr) {
+          console.warn("Referral count increment note:", refErr);
+        }
+      }
+
+      // Upgrade linked User account
       if (app.userId) {
         await prisma.user.update({
           where: { id: app.userId },
           data: { 
-            role: isLeaderFlag ? "LEADER" : "MEMBER", 
+            role: isLeader ? "LEADER" : "MEMBER", 
             memberId: member.id 
           }
         });
       }
     } else if (app.type === "PROPOSAL" || app.type === "CHAPTER" || app.type === "PROJECT") {
-      const poafId = await generatePoafId("PRJ");
+      const projectTitle = (formData.get("projectTitle") as string) || payload.title || payload.projectName || "New Initiative";
+      const projectCategory = (formData.get("projectCategory") as string) || payload.category || "Community Impact";
+      const projectDesc = (formData.get("projectDesc") as string) || payload.description || payload.summary || "Approved Initiative";
+      const projectPoafId = (formData.get("projectPoafId") as string) || await generatePoafId("PRJ");
       const firstDept = await prisma.department.findFirst();
+
       await prisma.project.create({
         data: {
-          poafId,
-          title: payload.title || payload.projectName || "New Continental Initiative",
-          description: payload.description || payload.summary || "Approved Pioneer Initiative",
+          poafId: projectPoafId,
+          title: projectTitle,
+          description: projectDesc,
           status: "APPROVED",
-          category: payload.category || "Community Impact",
+          category: projectCategory,
           departmentId: departmentId || firstDept?.id || "",
           country: payload.country || payload.countryName || undefined
         }
       });
     } else if (app.type === "PARTNERSHIP") {
+      const orgName = (formData.get("orgName") as string) || payload.organizationName || payload.orgName || payload.fullName || "Official Partner";
+      const orgType = (formData.get("orgType") as string) || payload.partnerType || payload.organizationType || "Institutional Partner";
+      const website = (formData.get("website") as string) || payload.website || undefined;
+
       await prisma.partnership.create({
         data: {
-          organizationName: payload.organizationName || payload.orgName || payload.fullName || "Official Partner",
-          organizationType: payload.partnerType || payload.organizationType || "Institutional Partner",
-          website: payload.website || undefined
+          organizationName: orgName,
+          organizationType: orgType,
+          website
         }
       });
     }
   }
 
   // Record Audit Log
-  // (Assuming we'd have the admin's session here, omitting for brevity or grabbing from getServerSession)
+  try {
+    await prisma.activityLog.create({
+      data: {
+        action: `PROCESS_APPLICATION_${newStatus}`,
+        entityType: "APPLICATION",
+        entityId: id,
+        details: `Application ${app.poafId || id} processed to status: ${newStatus}. Notes: ${notes || "None"}`
+      }
+    });
+  } catch (logErr) {
+    console.warn("Audit log notice:", logErr);
+  }
 
   await prisma.application.update({
     where: { id },
@@ -86,6 +149,10 @@ export async function processApplication(formData: FormData) {
   });
 
   revalidatePath("/admin/applications");
+  revalidatePath("/admin/members");
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/members");
+  revalidatePath("/leadership");
 }
 
 export async function deleteApplication(id: string) {

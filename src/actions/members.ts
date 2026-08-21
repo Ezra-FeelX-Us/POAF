@@ -16,18 +16,25 @@ export async function addMember(formData: FormData) {
   const school = (formData.get("school") as string) || null;
   const gradeLevel = (formData.get("gradeLevel") as string) || null;
   
-  const isLeader = formData.get("isLeader") === "on";
+  const displayOnMembersBoard = formData.get("displayOnMembersBoard") === "on" || formData.get("displayOnMembersBoard") === "true";
+  const displayOnLeadershipBoard = formData.get("displayOnLeadershipBoard") === "on" || formData.get("displayOnLeadershipBoard") === "true";
+  const displayOnHomepage = formData.get("displayOnHomepage") === "on" || formData.get("displayOnHomepage") === "true";
+  const displayOnDepartmentRoster = formData.get("displayOnDepartmentRoster") === "on" || formData.get("displayOnDepartmentRoster") === "true";
+  const isLeader = displayOnLeadershipBoard || role !== "Member";
+
   const leaderPosition = (formData.get("leaderPosition") as string) || null;
   const leaderOrder = formData.get("leaderOrder") ? parseInt(formData.get("leaderOrder") as string, 10) : null;
   const departmentId = (formData.get("departmentId") as string) || null;
   const photoUrl = (formData.get("photoUrl") as string) || null;
   const bio = (formData.get("bio") as string) || null;
+  const skills = (formData.get("skills") as string) || null;
   
   let poafId = formData.get("poafId") as string;
   if (!poafId) {
     poafId = await generatePoafId(isLeader ? "LDR" : "MEM");
   }
 
+  const customInviteCode = (formData.get("inviteCode") as string) || poafId.replace("POAF-", "");
   const initialRoles = isLeader ? `MEMBER,${role.toUpperCase().replace(/\s+/g, "_")}` : "MEMBER";
   
   await prisma.member.create({
@@ -42,6 +49,7 @@ export async function addMember(formData: FormData) {
       phone,
       school,
       gradeLevel,
+      skills,
       countryId, 
       status: "ACTIVE",
       isLeader,
@@ -51,6 +59,11 @@ export async function addMember(formData: FormData) {
       photoUrl: photoUrl || "/images/media_1787222340022.png",
       bio,
       leaderBio: isLeader ? bio : null,
+      inviteCode: customInviteCode,
+      displayOnMembersBoard,
+      displayOnLeadershipBoard,
+      displayOnHomepage,
+      displayOnDepartmentRoster,
       joinedDate: new Date()
     }
   });
@@ -102,7 +115,8 @@ export async function appointLeaderAction(formData: FormData) {
       departmentId: departmentId || existing.departmentId,
       countryId: countryId || existing.countryId,
       bio: bio || existing.bio,
-      photoUrl: photoUrl || existing.photoUrl
+      photoUrl: photoUrl || existing.photoUrl,
+      displayOnLeadershipBoard: true
     }
   });
 
@@ -150,7 +164,8 @@ export async function endRoleAction(memberId: string, roleToEnd: string) {
     data: {
       roles: rolesList.join(","),
       isLeader: hasRemainingLeaderRole,
-      role: hasRemainingLeaderRole ? rolesList[rolesList.length - 1] : "Member"
+      role: hasRemainingLeaderRole ? rolesList[rolesList.length - 1] : "Member",
+      displayOnLeadershipBoard: hasRemainingLeaderRole
     }
   });
 
@@ -180,13 +195,20 @@ export async function updateMember(formData: FormData) {
   const email = (formData.get("email") as string) || null;
   const countryId = formData.get("countryId") as string;
   
-  const isLeader = formData.get("isLeader") === "on";
+  const displayOnMembersBoard = formData.get("displayOnMembersBoard") === "on" || formData.get("displayOnMembersBoard") === "true";
+  const displayOnLeadershipBoard = formData.get("displayOnLeadershipBoard") === "on" || formData.get("displayOnLeadershipBoard") === "true";
+  const displayOnHomepage = formData.get("displayOnHomepage") === "on" || formData.get("displayOnHomepage") === "true";
+  const displayOnDepartmentRoster = formData.get("displayOnDepartmentRoster") === "on" || formData.get("displayOnDepartmentRoster") === "true";
+  const isLeader = displayOnLeadershipBoard || role !== "Member";
+
   const leaderPosition = (formData.get("leaderPosition") as string) || null;
   const leaderOrder = formData.get("leaderOrder") ? parseInt(formData.get("leaderOrder") as string, 10) : null;
   const departmentId = (formData.get("departmentId") as string) || null;
   const photoUrl = (formData.get("photoUrl") as string) || null;
   const bio = (formData.get("bio") as string) || null;
+  const skills = (formData.get("skills") as string) || null;
   const poafId = (formData.get("poafId") as string) || undefined;
+  const inviteCode = (formData.get("inviteCode") as string) || undefined;
   
   await prisma.member.update({
     where: { id },
@@ -203,6 +225,12 @@ export async function updateMember(formData: FormData) {
       departmentId,
       photoUrl,
       bio,
+      skills,
+      inviteCode,
+      displayOnMembersBoard,
+      displayOnLeadershipBoard,
+      displayOnHomepage,
+      displayOnDepartmentRoster,
       leaderBio: isLeader ? bio : null
     }
   });

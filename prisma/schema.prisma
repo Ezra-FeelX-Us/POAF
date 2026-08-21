@@ -120,6 +120,15 @@ model Member {
   leaderOrder      Int?     
   leaderBio        String?  
   
+  inviteCode       String?  @unique
+  invitedBy        String?  
+  inviteCount      Int      @default(0)
+
+  displayOnMembersBoard     Boolean  @default(true)
+  displayOnLeadershipBoard  Boolean  @default(false)
+  displayOnHomepage         Boolean  @default(false)
+  displayOnDepartmentRoster Boolean  @default(true)
+  
   countryId        String
   country          Country  @relation(fields: [countryId], references: [id])
   
@@ -427,4 +436,31 @@ model ProjectMessage {
   sender      Member   @relation("SentMessages", fields: [senderId], references: [id])
 
   createdAt   DateTime @default(now())
+}
+
+// ----------------------------------------
+// COMMUNITY & DEPARTMENT CHAT CHANNELS
+// ----------------------------------------
+model ChatMessage {
+  id           String   @id @default(uuid())
+  channel      String   @default("GENERAL") // GENERAL, LEADERSHIP, or departmentId
+  senderName   String
+  senderRole   String?
+  senderPhoto  String?
+  senderPoafId String?
+  content      String
+  createdAt    DateTime @default(now())
+}
+
+// ----------------------------------------
+// DEPARTMENT ANNOUNCEMENTS
+// ----------------------------------------
+model DepartmentAnnouncement {
+  id           String   @id @default(uuid())
+  departmentId String
+  title        String
+  content      String
+  authorName   String
+  authorRole   String?
+  createdAt    DateTime @default(now())
 }

@@ -18,6 +18,7 @@ export default async function AdminDashboard() {
   let countryCount = 8;
   let applicationCount = 0;
   let recentApplications: any[] = [];
+  let topRecruiters: any[] = [];
 
   try {
     const results = await Promise.all([
@@ -37,6 +38,12 @@ export default async function AdminDashboard() {
         where: { deletedAt: null },
         orderBy: { createdAt: "desc" },
         take: 5
+      }),
+      prisma.member.findMany({
+        where: { deletedAt: null, inviteCount: { gt: 0 } },
+        orderBy: { inviteCount: "desc" },
+        take: 6,
+        include: { department: true }
       })
     ]);
     totalMembers = results[0];
@@ -52,6 +59,7 @@ export default async function AdminDashboard() {
     countryCount = results[10];
     applicationCount = results[11];
     recentApplications = results[12];
+    topRecruiters = results[13];
   } catch (err) {
     console.warn("Admin dashboard fetch fallback:", err);
   }
@@ -194,6 +202,53 @@ export default async function AdminDashboard() {
  </div>
  </div>
  </div>
+
+  {/* Continental Referral & Recruitment Leaderboard */}
+  <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+    <div className="flex justify-between items-center mb-4">
+      <div>
+        <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+          <span>🏆</span> Top Pioneer Recruiters & Referral Leaderboard
+        </h3>
+        <p className="text-xs text-slate-500">Pioneers actively expanding POAF chapters across African nations via referral links</p>
+      </div>
+      <Link href="/admin/database?tab=members" className="text-xs font-bold text-blue-600 hover:text-blue-700">
+        View All in Database Studio &rarr;
+      </Link>
+    </div>
+
+    {topRecruiters.length === 0 ? (
+      <div className="p-6 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl border border-slate-100">
+        Referral tracking is active. Accepted members who invite applicants via their personal referral link will appear here.
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {topRecruiters.map((recruiter, idx) => (
+          <div key={recruiter.id} className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center font-black text-xs ${
+                idx === 0 ? "bg-amber-400 text-slate-950 shadow" :
+                idx === 1 ? "bg-slate-300 text-slate-900" :
+                idx === 2 ? "bg-amber-700 text-white" :
+                "bg-blue-100 text-blue-800"
+              }`}>
+                #{idx + 1}
+              </span>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs">{recruiter.firstName} {recruiter.lastName}</h4>
+                <p className="text-[10px] text-slate-500">{recruiter.department?.name || recruiter.role}</p>
+                <span className="font-mono text-[9px] font-bold text-purple-700">{recruiter.inviteCode || recruiter.poafId}</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-lg font-black text-blue-600">{recruiter.inviteCount}</span>
+              <span className="block text-[9px] text-slate-400 font-bold uppercase">Recruited</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
 
  {/* Recent Submissions Queue with Background Image Header */}
  <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">

@@ -5,10 +5,11 @@ import { submitApplicationAction } from "@/actions/applications";
 export default async function UnifiedApplyPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tab?: string }>;
+  searchParams: Promise<{ tab?: string; ref?: string; invite?: string }>;
 }) {
-  const { tab } = await searchParams;
+  const { tab, ref: refCode, invite } = await searchParams;
   const currentTab = (tab || "membership").toLowerCase();
+  const activeReferral = refCode || invite || "";
 
   const tabs = [
     { id: "membership", label: "Join Membership", activeBg: "bg-blue-600 text-white" },
@@ -35,6 +36,11 @@ export default async function UnifiedApplyPage({
           <p className="text-sm md:text-base text-blue-200 max-w-2xl mx-auto">
             Choose your application track below to join the movement, establish a chapter, compete in Community Impact, or partner with Pioneers of Africa's Future.
           </p>
+          {activeReferral && (
+            <div className="mt-3 inline-block bg-purple-500/20 text-purple-200 border border-purple-400/40 px-3.5 py-1 rounded-full text-xs font-bold">
+              ✨ Applying via Pioneer Referral Code: <span className="font-mono text-amber-300">{activeReferral}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -44,7 +50,7 @@ export default async function UnifiedApplyPage({
           {tabs.map((t) => (
             <Link
               key={t.id}
-              href={`/apply?tab=${t.id}`}
+              href={`/apply?tab=${t.id}${activeReferral ? `&ref=${activeReferral}` : ''}`}
               className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 currentTab === t.id
                   ? `${t.activeBg} shadow-md scale-[1.02]`
@@ -57,21 +63,21 @@ export default async function UnifiedApplyPage({
         </div>
 
         {/* Selected Form Container */}
-        <div className="bg-white/95 backdrop-blur-md p-6 sm:p-10 md:p-12 rounded-3xl shadow-2xl border border-white/30">
-          {currentTab === "membership" && <MembershipForm />}
-          {currentTab === "leadership" && <LeadershipForm />}
-          {currentTab === "proposal" && <ClubChapterForm />}
-          {currentTab === "chapter" && <ClubChapterForm />}
-          {currentTab === "partnership" && <PartnershipForm />}
-          {currentTab === "award" && <AwardForm />}
-          {currentTab === "competition" && <CommunityImpactCompetitionForm />}
+        <div className="bg-white/95 backdrop-blur-md p-6 sm:p-10 md:p-12 rounded-3xl shadow-2xl border border-white/30 text-slate-900">
+          {currentTab === "membership" && <MembershipForm invitedBy={activeReferral} />}
+          {currentTab === "leadership" && <LeadershipForm invitedBy={activeReferral} />}
+          {currentTab === "proposal" && <ClubChapterForm invitedBy={activeReferral} />}
+          {currentTab === "chapter" && <ClubChapterForm invitedBy={activeReferral} />}
+          {currentTab === "partnership" && <PartnershipForm invitedBy={activeReferral} />}
+          {currentTab === "award" && <AwardForm invitedBy={activeReferral} />}
+          {currentTab === "competition" && <CommunityImpactCompetitionForm invitedBy={activeReferral} />}
         </div>
       </div>
     </div>
   );
 }
 
-function MembershipForm() {
+function MembershipForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
@@ -80,6 +86,7 @@ function MembershipForm() {
       </div>
       <form action={submitApplicationAction} className="space-y-10">
         <input type="hidden" name="applicationType" value="membership" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
         
         {/* 1. Personal Information */}
         <section className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
@@ -140,7 +147,7 @@ function MembershipForm() {
   );
 }
 
-function LeadershipForm() {
+function LeadershipForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
@@ -149,6 +156,7 @@ function LeadershipForm() {
       </div>
       <form action={submitApplicationAction} className="space-y-6">
         <input type="hidden" name="applicationType" value="leadership" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Full Name *</label><input type="text" name="fullName" required placeholder="Full Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
@@ -168,24 +176,15 @@ function LeadershipForm() {
   );
 }
 
-function ClubChapterForm() {
+function ClubChapterForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
-        <h2 className="text-2xl sm:text-3xl font-black text-emerald-700 mb-2">POAF Club Chapter / Proposal</h2>
-        <p className="text-slate-500 text-sm">Submit an institutional charter to launch an accredited POAF chapter.</p>
+        <h2 className="text-2xl sm:text-3xl font-black text-emerald-700 mb-2">Establish a POAF Secondary School / University Chapter</h2>
+        <p className="text-slate-500 text-sm">Charter an official student chapter on your campus.</p>
       </div>
-      <form action={submitApplicationAction} className="space-y-8">
+      <form action={submitApplicationAction} className="space-y-6">
         <input type="hidden" name="applicationType" value="chapter" />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Lead Applicant Name *</label><input type="text" name="fullName" required placeholder="Your Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">School / University / Campus *</label><input type="text" name="schoolOrganization" required placeholder="Institution Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Proposed Chapter Name *</label><input type="text" name="chapterName" required placeholder="e.g. POAF Higa Boarding Chapter" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Country / City *</label><input type="text" name="countryCity" required placeholder="Country & City" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-        </div>
-
-        <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Chapter Purpose & Action Plan *</label><textarea name="chapterPurpose" required rows={4} placeholder="Describe the mission, local community challenges to address, and planned initiatives..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
 
         <PhotoUploadField label="Charter Lead Photo *" />
         <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
@@ -196,7 +195,7 @@ function ClubChapterForm() {
   );
 }
 
-function PartnershipForm() {
+function PartnershipForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
@@ -205,6 +204,7 @@ function PartnershipForm() {
       </div>
       <form action={submitApplicationAction} className="space-y-8">
         <input type="hidden" name="applicationType" value="partnership" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Organization Name *</label><input type="text" name="organizationName" required placeholder="e.g. KB's Opportunity Hub" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
@@ -224,7 +224,7 @@ function PartnershipForm() {
   );
 }
 
-function AwardForm() {
+function AwardForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
@@ -233,6 +233,7 @@ function AwardForm() {
       </div>
       <form action={submitApplicationAction} className="space-y-6">
         <input type="hidden" name="applicationType" value="award" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Full Name *</label><input type="text" name="fullName" required placeholder="Nominee Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
@@ -251,7 +252,7 @@ function AwardForm() {
   );
 }
 
-function CommunityImpactCompetitionForm() {
+function CommunityImpactCompetitionForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
@@ -264,6 +265,7 @@ function CommunityImpactCompetitionForm() {
 
       <form action={submitApplicationAction} className="space-y-8">
         <input type="hidden" name="applicationType" value="competition" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
         
         {/* Track Selection */}
         <section className="bg-indigo-50 p-6 rounded-2xl border border-indigo-200">
