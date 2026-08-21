@@ -81,48 +81,50 @@ export async function resolveCurrentUserPortals(): Promise<UserPortalResolution>
                        dbUser?.role === 'AMBASSADOR';
   const isStudentMember = true; // All authenticated accounts have Student Member base access
 
-  if (isStudentMember) {
-    activeRoles.push('STUDENT_MEMBER');
-    allowedPortals.push({
-      id: 'CLASSROOM',
-      label: 'Classroom',
-      roleLabel: 'Student Member',
-      href: '/classroom'
-    });
-  }
+  // 1. Student Member base access (Available to all authenticated pioneers)
+  activeRoles.push('STUDENT_MEMBER');
+  allowedPortals.push({
+    id: 'CLASSROOM',
+    label: 'Classroom',
+    roleLabel: 'Student Member',
+    href: '/classroom'
+  });
 
-  if (isLeader) {
+  // 2. Department Leader access
+  if (isLeader || isAdmin) {
     activeRoles.push('DEPARTMENT_LEADER');
     allowedPortals.push({
       id: 'STAFF',
       label: 'Staff',
-      roleLabel: dbMember?.leaderPosition || 'Department Leader',
+      roleLabel: dbMember?.leaderPosition || (isAdmin ? 'Executive Administration' : 'Department Leader'),
       href: '/staff'
     });
   }
 
-  if (isAmbassador) {
+  // 3. National Ambassador access
+  if (isAmbassador || isAdmin) {
     activeRoles.push('NATIONAL_AMBASSADOR');
     allowedPortals.push({
       id: 'OFFICE',
       label: 'Office',
-      roleLabel: dbMember?.country ? `Ambassador of ${dbMember.country.name}` : 'National Ambassador',
+      roleLabel: dbMember?.country ? `Ambassador of ${dbMember.country.name}` : 'National Diplomatic Office',
       href: '/office'
     });
   }
 
+  // 4. Executive Administrator access (Access to all)
   if (isAdmin) {
     activeRoles.push('ADMIN');
     if (userRole === 'SUPER_ADMIN') activeRoles.push('SUPER_ADMIN');
     allowedPortals.push({
       id: 'ADMIN',
       label: 'Admin Portal',
-      roleLabel: 'Administrator',
+      roleLabel: 'System Administrator',
       href: '/admin/dashboard'
     });
   }
 
-  // Determine primary portal: ADMIN > STAFF > OFFICE > CLASSROOM
+  // Determine primary active portal: ADMIN > STAFF > OFFICE > CLASSROOM
   let primaryPortal: PortalItem = allowedPortals[0];
   if (isAdmin) {
     primaryPortal = allowedPortals.find(p => p.id === 'ADMIN') || primaryPortal;
