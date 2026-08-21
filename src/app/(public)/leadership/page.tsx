@@ -24,7 +24,7 @@ export default async function LeadershipPage() {
   }
 
   // 1. Co-Founders & Executives
-  const coFounders = [
+  const staticFounders = [
     {
       name: "Ezra Michael Jofe",
       role: "Founder & Executive President",
@@ -36,7 +36,7 @@ export default async function LeadershipPage() {
   ];
 
   // 2. National Ambassadors
-  const nationalAmbassadors = [
+  const staticAmbassadors = [
     { name: "Ali Omari Washikala", role: "Ambassador of Kenya", country: "Kenya", img: "/images/amb-kenya.png" },
     { name: "Kofi Mensah", role: "Ambassador of Ghana", country: "Ghana", img: "/images/amb-ghana.png" },
     { name: "Caleb-John Dismas", role: "Ambassador of Tanzania", country: "Tanzania", img: "/images/amb-tanzania.png" },
@@ -48,7 +48,7 @@ export default async function LeadershipPage() {
   ];
 
   // 3. Department Leaders
-  const departmentLeaders = [
+  const staticDeptLeaders = [
     { name: "Lydia Teshibelay", role: "Department Leader", dept: "Community Outreach", img: "/images/lydia-teshibelay.png" },
     { name: "Tebarek Alemu", role: "Department Leader", dept: "Technology & Innovation", img: "/images/tebarek-alemu.png" },
     { name: "Dagmawit Getye", role: "Department Leader", dept: "Debate & Communication", img: "/images/dagmawit-getye.png" },
@@ -63,7 +63,7 @@ export default async function LeadershipPage() {
   ];
 
   // 4. Project Leaders & Managers
-  const projectManagers = [
+  const staticManagers = [
     { name: "Ali Usman", role: "Chief Engineer & Manager", dept: "Research & Engineering", img: "/images/media_1787223395009.png" },
     { name: "Betlehem Tadesse", role: "Manager & Ambassador", dept: "Community Outreach", img: "/images/betlehem-tadesse.jpg" },
     { name: "Edom Esayas", role: "Manager & Ambassador", dept: "Capacity Building", img: "/images/edom-esayas.jpg" },
@@ -71,13 +71,72 @@ export default async function LeadershipPage() {
   ];
 
   // 5. Student Leaders & Chapter Heads
-  const studentLeaders = [
+  const staticStudentLeaders = [
     { name: "Fireab Mulugeta", role: "Secretary & Ambassador", dept: "Community Outreach", img: "/images/fireab-mulugeta.jpg" },
     { name: "Behailu Berehanu", role: "Secretary & Ambassador", dept: "Community Outreach", img: "/images/behailu-berehanu.jpg" },
     { name: "Abyalew Ayele", role: "Secretary & Ambassador", dept: "Debate & Communication", img: "/images/abyalew-ayele.jpg" },
     { name: "Israel Tamirat", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/israel-tamirat.jpg" },
     { name: "Barkot Esubalew", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/barkot-esubalew.jpg" },
     { name: "Bony Zerihun", role: "Student Leader & Ambassador", dept: "Youth Empowerment", img: "/images/bony-zerihun.jpg" }
+  ];
+
+  // DYNAMIC MERGING WITH DATABASE RECORDS
+  const dbFounders = allLeaders.filter(l => l.role?.toLowerCase().includes("president") || l.role?.toLowerCase().includes("founder") || l.role?.toLowerCase().includes("executive"));
+  const dbAmbassadors = allLeaders.filter(l => l.role?.toLowerCase().includes("ambassador") || l.leaderPosition?.toLowerCase().includes("ambassador"));
+  const dbDeptLeaders = allLeaders.filter(l => l.role === "Department Leader" || (l.role?.toLowerCase().includes("leader") && !l.role?.toLowerCase().includes("student")));
+  const dbManagers = allLeaders.filter(l => l.role === "Manager" || l.role === "Chief Engineer" || l.leaderPosition?.toLowerCase().includes("manager"));
+  const dbStudentLeaders = allLeaders.filter(l => l.role === "Secretary" || l.role === "Student Leader" || l.leaderPosition?.toLowerCase().includes("student"));
+
+  const coFounders = [
+    ...dbFounders.map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      bio: l.bio || "Executive council member championing sustainable pan-African student solutions.",
+      country: l.country?.name || "Pan-Africa",
+      department: l.department?.name || "Executive Council",
+      img: l.photoUrl || "/images/media_1787225249810.png"
+    })),
+    ...staticFounders.filter(sf => !dbFounders.some(df => `${df.firstName} ${df.lastName}`.toLowerCase() === sf.name.toLowerCase()))
+  ];
+
+  const nationalAmbassadors = [
+    ...dbAmbassadors.map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      country: l.country?.name || "Pan-Africa",
+      img: l.photoUrl || "/images/media_1787222340022.png"
+    })),
+    ...staticAmbassadors.filter(sa => !dbAmbassadors.some(da => `${da.firstName} ${da.lastName}`.toLowerCase() === sa.name.toLowerCase()))
+  ];
+
+  const departmentLeaders = [
+    ...dbDeptLeaders.map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      dept: l.department?.name || "General Division",
+      img: l.photoUrl || "/images/media_1787222340022.png"
+    })),
+    ...staticDeptLeaders.filter(sd => !dbDeptLeaders.some(dd => `${dd.firstName} ${dd.lastName}`.toLowerCase() === sd.name.toLowerCase()))
+  ];
+
+  const projectManagers = [
+    ...dbManagers.map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      dept: l.department?.name || "Engineering & Labs",
+      img: l.photoUrl || "/images/media_1787222340022.png"
+    })),
+    ...staticManagers.filter(sm => !dbManagers.some(dm => `${dm.firstName} ${dm.lastName}`.toLowerCase() === sm.name.toLowerCase()))
+  ];
+
+  const studentLeaders = [
+    ...dbStudentLeaders.map(l => ({
+      name: `${l.firstName} ${l.lastName}`,
+      role: l.leaderPosition || l.role,
+      dept: l.department?.name || "Campus Affairs",
+      img: l.photoUrl || "/images/media_1787222340022.png"
+    })),
+    ...staticStudentLeaders.filter(ss => !dbStudentLeaders.some(ds => `${ds.firstName} ${ds.lastName}`.toLowerCase() === ss.name.toLowerCase()))
   ];
 
   return (

@@ -39,7 +39,31 @@ export async function processApplication(formData: FormData) {
     const isLeader = displayOnLeadershipBoard || assignedRole !== "Member";
     const invitedBy = payload.invitedBy || payload.ref || (formData.get("invitedBy") as string) || undefined;
 
-    if (app.type === "MEMBERSHIP" || app.type === "LEADERSHIP") {
+    // Resolve or Auto-Create Country
+    let resolvedCountryId = countryId;
+    const countryName = (formData.get("countryName") as string) || payload.country || payload.countryName || payload.countryCity?.split(",")[0]?.trim();
+    if (countryName) {
+      try {
+        const c = await prisma.country.upsert({
+          where: { name: countryName },
+          update: {},
+          create: { name: countryName, code: countryName.slice(0, 2).toUpperCase() }
+        });
+        resolvedCountryId = c.id;
+      } catch (cErr) {
+        console.warn("Country upsert notice:", cErr);
+      }
+    }
+
+    if (!resolvedCountryId) {
+      resolvedCountryId = (await prisma.country.findFirst())?.id || "";
+    }
+
+    const isMemberLike = [
+      "MEMBERSHIP", "LEADERSHIP", "AMBASSADOR", "EXECUTIVE", "DEPARTMENT_LEADER", "AWARD"
+    ].includes(app.type.toUpperCase());
+
+    if (isMemberLike) {
       const member = await prisma.member.create({
         data: {
           poafId: customPoafId,
@@ -51,7 +75,7 @@ export async function processApplication(formData: FormData) {
           leaderPosition,
           isLeader,
           departmentId: departmentId || undefined,
-          countryId,
+          countryId: resolvedCountryId,
           photoUrl,
           bio,
           skills,
@@ -93,10 +117,10 @@ export async function processApplication(formData: FormData) {
           }
         });
       }
-    } else if (app.type === "PROPOSAL" || app.type === "CHAPTER" || app.type === "PROJECT") {
-      const projectTitle = (formData.get("projectTitle") as string) || payload.title || payload.projectName || "New Initiative";
-      const projectCategory = (formData.get("projectCategory") as string) || payload.category || "Community Impact";
-      const projectDesc = (formData.get("projectDesc") as string) || payload.description || payload.summary || "Approved Initiative";
+    } else if (app.type === "PROPOSAL" || app.type === "CHAPTER" || app.type === "PROJECT" || app.type === "COMPETITION") {
+      const projectTitle = (formData.get("projectTitle") as string) || payload.title || payload.projectName || payload.chapterName || "New Initiative";
+      const projectCategory = (formData.get("projectCategory") as string) || payload.category || (app.type === "CHAPTER" ? "Campus Chapter" : "Community Impact");
+      const projectDesc = (formData.get("projectDesc") as string) || payload.description || payload.summary || payload.charterPlan || "Approved Initiative";
       const projectPoafId = (formData.get("projectPoafId") as string) || await generatePoafId("PRJ");
       const firstDept = await prisma.department.findFirst();
 
@@ -115,12 +139,14 @@ export async function processApplication(formData: FormData) {
       const orgName = (formData.get("orgName") as string) || payload.organizationName || payload.orgName || payload.fullName || "Official Partner";
       const orgType = (formData.get("orgType") as string) || payload.partnerType || payload.organizationType || "Institutional Partner";
       const website = (formData.get("website") as string) || payload.website || undefined;
+      const collaboration = (formData.get("collaboration") as string) || payload.whyPartner || payload.objectives || undefined;
 
       await prisma.partnership.create({
         data: {
           organizationName: orgName,
           organizationType: orgType,
-          website
+          website,
+          collaborationAreas: collaboration
         }
       });
     }
@@ -151,8 +177,13 @@ export async function processApplication(formData: FormData) {
   revalidatePath("/admin/applications");
   revalidatePath("/admin/members");
   revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/database");
   revalidatePath("/members");
   revalidatePath("/leadership");
+  revalidatePath("/departments");
+  revalidatePath("/nations");
+  revalidatePath("/partners");
+  revalidatePath("/");
 }
 
 export async function deleteApplication(id: string) {

@@ -4,7 +4,18 @@ import { processApplication, deleteApplication } from "@/actions/adminApplicatio
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminApplicationsPage() {
+import Link from "next/link";
+
+export default async function AdminApplicationsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ track?: string; status?: string; q?: string }>;
+}) {
+  const search = await searchParams;
+  const trackFilter = (search?.track || "all").toUpperCase();
+  const statusFilter = (search?.status || "all").toUpperCase();
+  const query = (search?.q || "").toLowerCase().trim();
+
   let applications: any[] = [];
   let departments: any[] = [];
   let countries: any[] = [];
@@ -31,26 +42,120 @@ export default async function AdminApplicationsPage() {
     console.warn("Applications fetch fallback:", err);
   }
 
+  // Filter applications
+  const filteredApps = applications.filter((app) => {
+    let matchesTrack = true;
+    if (trackFilter !== "ALL") {
+      if (trackFilter === "AMBASSADOR") {
+        matchesTrack = app.type === "AMBASSADOR" || app.payload?.toLowerCase().includes("ambassador");
+      } else if (trackFilter === "EXECUTIVE") {
+        matchesTrack = app.type === "EXECUTIVE" || app.payload?.toLowerCase().includes("president") || app.payload?.toLowerCase().includes("founder");
+      } else if (trackFilter === "DEPARTMENT") {
+        matchesTrack = app.type === "DEPARTMENT" || app.type === "DEPARTMENT_LEADER" || app.payload?.toLowerCase().includes("department");
+      } else if (trackFilter === "MEMBERSHIP") {
+        matchesTrack = app.type === "MEMBERSHIP";
+      } else if (trackFilter === "PARTNERSHIP") {
+        matchesTrack = app.type === "PARTNERSHIP";
+      } else if (trackFilter === "CHAPTER") {
+        matchesTrack = app.type === "CHAPTER" || app.type === "PROPOSAL";
+      }
+    }
+
+    let matchesStatus = true;
+    if (statusFilter !== "ALL") {
+      matchesStatus = app.status === statusFilter;
+    }
+
+    let matchesQuery = true;
+    if (query) {
+      const payloadStr = (app.payload || "").toLowerCase();
+      const poafIdStr = (app.poafId || "").toLowerCase();
+      matchesQuery = payloadStr.includes(query) || poafIdStr.includes(query) || (app.user?.email || "").toLowerCase().includes(query);
+    }
+
+    return matchesTrack && matchesStatus && matchesQuery;
+  });
+
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Application Review & Full Assignment Engine</h1>
-          <p className="text-sm text-slate-600">Review pioneer applications and explicitly define identity, roles, departments, invite codes, and public display destinations.</p>
+          <h1 className="text-3xl font-black text-slate-900">Application Review & Decision Station</h1>
+          <p className="text-sm text-slate-600">Review incoming international requests for membership, ambassadors, leadership, executive roles, and partnerships.</p>
         </div>
-        <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-xl font-black text-sm border border-blue-200">
-          Applications in Queue: {applications.length}
+        <div className="flex items-center gap-2">
+          <span className="bg-blue-600 text-white px-4 py-2 rounded-xl font-black text-xs shadow-sm">
+            Total Applications: {applications.length}
+          </span>
+          <span className="bg-amber-100 text-amber-800 px-3 py-2 rounded-xl font-bold text-xs border border-amber-200">
+            Pending: {applications.filter(a => a.status === "SUBMITTED").length}
+          </span>
+        </div>
+      </div>
+
+      {/* Track Filter Tabs */}
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+        {[
+          { id: "all", label: "All Applications", count: applications.length },
+          { id: "ambassador", label: "Ambassadors", count: applications.filter(a => a.type === "AMBASSADOR" || a.payload?.toLowerCase().includes("ambassador")).length },
+          { id: "executive", label: "Executive Council", count: applications.filter(a => a.type === "EXECUTIVE" || a.payload?.toLowerCase().includes("president") || a.payload?.toLowerCase().includes("founder")).length },
+          { id: "department", label: "Dept Leaders", count: applications.filter(a => a.type === "DEPARTMENT" || a.type === "DEPARTMENT_LEADER" || a.payload?.toLowerCase().includes("department")).length },
+          { id: "membership", label: "Pioneers / Members", count: applications.filter(a => a.type === "MEMBERSHIP").length },
+          { id: "partnership", label: "Partnerships", count: applications.filter(a => a.type === "PARTNERSHIP").length },
+          { id: "chapter", label: "School Chapters", count: applications.filter(a => a.type === "CHAPTER" || a.type === "PROPOSAL").length },
+        ].map((t) => (
+          <Link
+            key={t.id}
+            href={`/admin/applications?track=${t.id}${statusFilter !== "ALL" ? `&status=${statusFilter.toLowerCase()}` : ""}`}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              trackFilter === t.id.toUpperCase()
+                ? "bg-slate-900 text-white shadow-sm"
+                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+            }`}
+          >
+            <span>{t.label}</span>
+            <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+              trackFilter === t.id.toUpperCase() ? "bg-slate-700 text-slate-200" : "bg-slate-100 text-slate-600"
+            }`}>
+              {t.count}
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Status Filter Sub-Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+        <div className="flex flex-wrap gap-2 text-xs">
+          <span className="font-bold text-slate-500 py-1 px-1">Status:</span>
+          {["all", "submitted", "accepted", "rejected"].map((st) => (
+            <Link
+              key={st}
+              href={`/admin/applications?status=${st}${trackFilter !== "ALL" ? `&track=${trackFilter.toLowerCase()}` : ""}`}
+              className={`px-3 py-1 rounded-lg font-bold transition-colors uppercase text-[10px] ${
+                statusFilter === st.toUpperCase()
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-slate-600 hover:bg-slate-200 border border-slate-200"
+              }`}
+            >
+              {st === "submitted" ? "Pending Review" : st}
+            </Link>
+          ))}
+        </div>
+
+        <div className="text-xs text-slate-500 font-bold">
+          Showing {filteredApps.length} of {applications.length} applications
         </div>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        {applications.length === 0 ? (
+        {filteredApps.length === 0 ? (
           <div className="p-12 text-center text-slate-500 font-semibold">
-            No applications pending in the queue.
+            No applications match the selected filter criteria.
           </div>
         ) : (
           <div className="divide-y divide-slate-200">
-            {applications.map((app) => {
+            {filteredApps.map((app) => {
               let parsedPayload: any = {};
               try {
                 parsedPayload = JSON.parse(app.payload || "{}");

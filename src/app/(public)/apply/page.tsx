@@ -12,29 +12,30 @@ export default async function UnifiedApplyPage({
   const activeReferral = refCode || invite || "";
 
   const tabs = [
-    { id: "membership", label: "Join Membership", activeBg: "bg-blue-600 text-white" },
-    { id: "leadership", label: "Join Leadership", activeBg: "bg-yellow-600 text-white" },
-    { id: "proposal", label: "Join Club Chapter", activeBg: "bg-emerald-600 text-white" },
-    { id: "partnership", label: "Join Partnership", activeBg: "bg-purple-600 text-white" },
-    { id: "award", label: "Award Application", activeBg: "bg-red-600 text-white" },
-    { id: "competition", label: "Impact Competition", activeBg: "bg-indigo-600 text-white" }
+    { id: "membership", label: "1. Membership", activeBg: "bg-blue-600 text-white" },
+    { id: "ambassador", label: "2. Country Ambassador", activeBg: "bg-emerald-600 text-white" },
+    { id: "department", label: "3. Dept Leadership", activeBg: "bg-indigo-600 text-white" },
+    { id: "executive", label: "4. Executive Council", activeBg: "bg-amber-600 text-white" },
+    { id: "partnership", label: "5. Partnership", activeBg: "bg-purple-600 text-white" },
+    { id: "chapter", label: "6. Club Chapter", activeBg: "bg-teal-600 text-white" },
+    { id: "award", label: "7. Awards & Grants", activeBg: "bg-red-600 text-white" }
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 relative">
+    <div className="min-h-screen bg-slate-900 text-slate-100 relative font-serif italic">
       {/* Header Banner */}
       <div 
         className="py-16 md:py-20 px-6 text-center bg-cover bg-center relative z-10"
         style={{ backgroundImage: "url('/images/media_1787224434429.jpg')" }} 
       >
         <div className="absolute inset-0 bg-blue-950/90"></div>
-        <div className="relative z-10 text-white">
+        <div className="relative z-10 text-white max-w-4xl mx-auto">
           <div className="inline-block bg-blue-500/30 text-blue-300 font-bold px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-3 border border-blue-400/30">
-            Official POAF Application Center
+            Official POAF Global Intake Station
           </div>
-          <h1 className="text-3xl md:text-5xl font-black mb-3">Unified Application Portal</h1>
+          <h1 className="text-3xl md:text-5xl font-black mb-3">Unified International Application Portal</h1>
           <p className="text-sm md:text-base text-blue-200 max-w-2xl mx-auto">
-            Choose your application track below to join the movement, establish a chapter, compete in Community Impact, or partner with Pioneers of Africa's Future.
+            Submit your application in one place to join as a pioneer member, represent your sovereign nation as an ambassador, lead a department, join the executive council, or establish an institutional partnership.
           </p>
           {activeReferral && (
             <div className="mt-3 inline-block bg-purple-500/20 text-purple-200 border border-purple-400/40 px-3.5 py-1 rounded-full text-xs font-bold">
@@ -44,14 +45,14 @@ export default async function UnifiedApplyPage({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 pb-24 max-w-4xl relative z-20 -mt-12">
+      <div className="container mx-auto px-4 sm:px-6 pb-24 max-w-5xl relative z-20 -mt-12">
         {/* Application Track Selector Bar */}
         <div className="bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-white/20 mb-8 flex flex-wrap justify-center gap-2">
           {tabs.map((t) => (
             <Link
               key={t.id}
               href={`/apply?tab=${t.id}${activeReferral ? `&ref=${activeReferral}` : ''}`}
-              className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 currentTab === t.id
                   ? `${t.activeBg} shadow-md scale-[1.02]`
                   : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -65,10 +66,11 @@ export default async function UnifiedApplyPage({
         {/* Selected Form Container */}
         <div className="bg-white/95 backdrop-blur-md p-6 sm:p-10 md:p-12 rounded-3xl shadow-2xl border border-white/30 text-slate-900">
           {currentTab === "membership" && <MembershipForm invitedBy={activeReferral} />}
-          {currentTab === "leadership" && <LeadershipForm invitedBy={activeReferral} />}
-          {currentTab === "proposal" && <ClubChapterForm invitedBy={activeReferral} />}
-          {currentTab === "chapter" && <ClubChapterForm invitedBy={activeReferral} />}
+          {currentTab === "ambassador" && <CountryAmbassadorForm invitedBy={activeReferral} />}
+          {currentTab === "department" && <DepartmentLeaderForm invitedBy={activeReferral} />}
+          {currentTab === "executive" && <ExecutiveCouncilForm invitedBy={activeReferral} />}
           {currentTab === "partnership" && <PartnershipForm invitedBy={activeReferral} />}
+          {currentTab === "chapter" && <ClubChapterForm invitedBy={activeReferral} />}
           {currentTab === "award" && <AwardForm invitedBy={activeReferral} />}
           {currentTab === "competition" && <CommunityImpactCompetitionForm invitedBy={activeReferral} />}
         </div>
@@ -81,8 +83,11 @@ function MembershipForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
-        <h2 className="text-2xl sm:text-3xl font-black text-blue-900 mb-2">POAF Pioneer Membership Application</h2>
-        <p className="text-slate-500 text-sm">Please fill out all required fields to join the continental youth movement.</p>
+        <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+          Track 1: General Continental Pioneer
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-blue-900 mt-2 mb-1">POAF Pioneer Membership Application</h2>
+        <p className="text-slate-500 text-sm">Join the continental youth movement as an official student pioneer, project volunteer, or chapter member.</p>
       </div>
       <form action={submitApplicationAction} className="space-y-10">
         <input type="hidden" name="applicationType" value="membership" />
@@ -119,7 +124,7 @@ function MembershipForm({ invitedBy }: { invitedBy?: string }) {
         <section className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <h3 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2">3. Department & Skills</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Department of Interest *</label><select name="departmentInterest" required className="w-full rounded-xl border-slate-300 p-3 border outline-none focus:border-blue-500 text-sm bg-white"><option value="">Select Department</option><option value="Community Outreach">1. Community Outreach</option><option value="Technology & Innovation">2. Technology & Innovation</option><option value="Research & Engineering">3. Research & Engineering</option><option value="Debate & Communication">4. Debate & Communication</option><option value="Youth Empowerment">5. Youth Empowerment</option><option value="Capacity Building">6. Capacity Building</option></select></div>
+            <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Department of Interest *</label><select name="departmentInterest" required className="w-full rounded-xl border-slate-300 p-3 border outline-none focus:border-blue-500 text-sm bg-white"><option value="">Select Department</option><option value="Community Outreach & Problem-Solving">Community Outreach & Problem-Solving</option><option value="Technology & Innovation">Technology & Innovation</option><option value="Research & Engineering">Research & Engineering</option><option value="Debate & Communication">Debate & Communication</option><option value="Youth Empowerment & Community Development">Youth Empowerment & Community Development</option><option value="Student Development & Capacity Building">Student Development & Capacity Building</option></select></div>
             <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Skills & Talents *</label><input type="text" name="skills" required placeholder="e.g. Coding, Debate, Leadership" className="w-full rounded-xl border-slate-300 p-3 border outline-none focus:border-blue-500 text-sm" /></div>
           </div>
         </section>
@@ -140,36 +145,123 @@ function MembershipForm({ invitedBy }: { invitedBy?: string }) {
         </section>
         
         <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
-          Submit Pioneer Membership Application
+          Submit Pioneer Membership Application &rarr;
         </button>
       </form>
     </>
   );
 }
 
-function LeadershipForm({ invitedBy }: { invitedBy?: string }) {
+function CountryAmbassadorForm({ invitedBy }: { invitedBy?: string }) {
   return (
     <>
       <div className="mb-8 border-b pb-6">
-        <h2 className="text-2xl sm:text-3xl font-black text-yellow-600 mb-2">POAF Leadership Application</h2>
-        <p className="text-slate-500 text-sm">Apply for executive, department lead, or campus leadership portfolios.</p>
+        <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+          Track 2: Sovereign Diplomatic Representation
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 mb-1">National Ambassador Application</h2>
+        <p className="text-slate-500 text-sm">Represent POAF as the official diplomatic delegate and national leader for your sovereign African nation or diaspora region.</p>
       </div>
-      <form action={submitApplicationAction} className="space-y-6">
-        <input type="hidden" name="applicationType" value="leadership" />
+
+      <form action={submitApplicationAction} className="space-y-8">
+        <input type="hidden" name="applicationType" value="ambassador" />
         <input type="hidden" name="invitedBy" value={invitedBy || ""} />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        {/* Personal & Diplomatic Country Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Full Name *</label><input type="text" name="fullName" required placeholder="Full Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Target Leadership Position *</label><input type="text" name="currentRole" required placeholder="e.g. Department Leader, Regional Lead" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Email / Phone *</label><input type="text" name="contactInfo" required placeholder="contact@domain.com" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Country *</label><input type="text" name="country" required placeholder="e.g. Ghana, Ethiopia" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Represented Sovereign Nation *</label><input type="text" name="country" required placeholder="e.g. Kenya, Ghana, South Africa, Nigeria" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Email Address *</label><input type="email" name="email" required placeholder="ambassador@domain.com" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Phone / WhatsApp *</label><input type="tel" name="phone" required placeholder="+..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Primary City / Region *</label><input type="text" name="city" required placeholder="City or Administrative Region" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">University / Organization</label><input type="text" name="school" placeholder="Current Institution / Workplace" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
         </div>
 
-        <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Executive & Leadership Track Record *</label><textarea name="experience" required rows={4} placeholder="Detail your previous leadership roles, project execution, and organizational achievements..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
-        
-        <PhotoUploadField label="Headshot Photo *" />
-        <button type="submit" className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
-          Submit Leadership Portfolio Application
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">National Mobilization & Diplomatic Strategy *</label><textarea name="bio" required rows={4} placeholder="Describe your vision for establishing secondary school & university chapters, mobilizing youth, and building institutional ties in your country..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Previous Leadership & Community Experience *</label><textarea name="skills" required rows={3} placeholder="Highlight previous leadership roles, student governance, or social impact initiatives..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+        </div>
+
+        <PhotoUploadField label="Official Ambassador Portrait Photo *" name="headshot" />
+
+        <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
+          Submit National Ambassador Application &rarr;
+        </button>
+      </form>
+    </>
+  );
+}
+
+function DepartmentLeaderForm({ invitedBy }: { invitedBy?: string }) {
+  return (
+    <>
+      <div className="mb-8 border-b pb-6">
+        <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+          Track 3: Operational Department Governance
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 mb-1">Department Leadership Application</h2>
+        <p className="text-slate-500 text-sm">Apply for Head of Department, Manager, Chief Engineer, or Division Secretary portfolios.</p>
+      </div>
+
+      <form action={submitApplicationAction} className="space-y-8">
+        <input type="hidden" name="applicationType" value="department_leader" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Full Name *</label><input type="text" name="fullName" required placeholder="Full Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Department Portfolio of Choice *</label><select name="departmentInterest" required className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm bg-white"><option value="">Select Department</option><option value="Technology & Innovation">Technology & Innovation</option><option value="Community Outreach & Problem-Solving">Community Outreach & Problem-Solving</option><option value="Research & Engineering">Research & Engineering</option><option value="Debate & Communication">Debate & Communication</option><option value="Youth Empowerment & Community Development">Youth Empowerment & Community Development</option><option value="Student Development & Capacity Building">Student Development & Capacity Building</option></select></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Target Leadership Level *</label><select name="currentRole" required className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm bg-white"><option value="Department Leader">Department Leader (Head)</option><option value="Manager">Department Manager / Coordinator</option><option value="Chief Engineer">Chief Engineer / Technical Lead</option><option value="Secretary">Department Secretary</option></select></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Country of Residence *</label><input type="text" name="country" required placeholder="e.g. Ethiopia, Kenya, Rwanda" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Email Address *</label><input type="email" name="email" required placeholder="leader@domain.com" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Phone / WhatsApp *</label><input type="tel" name="phone" required placeholder="+..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+        </div>
+
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Department Operational Plan & Initiative Vision *</label><textarea name="bio" required rows={4} placeholder="Detail the initiatives, workshops, research projects, or community surveys you will lead in this division..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Technical Skills & Leadership Record *</label><textarea name="skills" required rows={3} placeholder="List relevant engineering, management, debate, or software skills..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+        </div>
+
+        <PhotoUploadField label="Professional Headshot Photo *" name="headshot" />
+
+        <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
+          Submit Department Leadership Application &rarr;
+        </button>
+      </form>
+    </>
+  );
+}
+
+function ExecutiveCouncilForm({ invitedBy }: { invitedBy?: string }) {
+  return (
+    <>
+      <div className="mb-8 border-b pb-6">
+        <span className="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+          Track 4: Executive Council & High Governance
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 mb-1">Executive Council Application</h2>
+        <p className="text-slate-500 text-sm">Apply for Founder, Presidency, Vice-Presidency, and Global Executive Director roles.</p>
+      </div>
+
+      <form action={submitApplicationAction} className="space-y-8">
+        <input type="hidden" name="applicationType" value="executive" />
+        <input type="hidden" name="invitedBy" value={invitedBy || ""} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Full Name *</label><input type="text" name="fullName" required placeholder="Full Name" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Target Executive Office *</label><select name="currentRole" required className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm bg-white"><option value="Executive Vice President">Executive Vice President</option><option value="Continental Secretary General">Continental Secretary General</option><option value="Executive Director of Strategy">Executive Director of Strategy</option><option value="Executive Director of Expansion">Executive Director of Expansion</option></select></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Email Address *</label><input type="email" name="email" required placeholder="executive@poaf.org" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Country of Citizenship / Residence *</label><input type="text" name="country" required placeholder="e.g. Ethiopia, Ghana, South Africa" className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm" /></div>
+        </div>
+
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">High-Level Strategic Philosophy & Pan-African Vision *</label><textarea name="bio" required rows={4} placeholder="Outline your governance vision, institutional funding strategies, and continental scaling roadmap for POAF..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Executive Track Record & Board Experience *</label><textarea name="skills" required rows={3} placeholder="Summarize your past organizational management, diplomacy, and executive execution..." className="w-full rounded-xl border-slate-300 p-3 border outline-none text-sm"></textarea></div>
+        </div>
+
+        <PhotoUploadField label="Executive Portrait Photo *" name="headshot" />
+
+        <button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 rounded-xl shadow-xl transition-all hover:-translate-y-0.5 text-sm">
+          Submit Executive Council Application &rarr;
         </button>
       </form>
     </>
