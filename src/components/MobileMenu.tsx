@@ -3,7 +3,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-export default function MobileMenu() {
+export default function MobileMenu({
+  portalInfo = {
+    label: "Sign In \u2192",
+    href: "/auth/login",
+    badgeColor: "bg-blue-600 hover:bg-blue-700 text-white"
+  }
+}: {
+  portalInfo?: {
+    label: string;
+    href: string;
+    badgeColor: string;
+  };
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -31,8 +43,12 @@ export default function MobileMenu() {
           <Link href="/verify" onClick={() => setIsOpen(false)} className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">Verify ID</Link>
           
           <div className="border-t border-slate-700 pt-3 mt-2 flex flex-col gap-2">
-            <Link href="/auth/login" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">
-              Sign In &rarr;
+            <Link 
+              href={portalInfo.href} 
+              onClick={() => setIsOpen(false)} 
+              className={`w-full text-center px-4 py-2.5 font-bold rounded-xl text-xs transition shadow-md ${portalInfo.badgeColor}`}
+            >
+              {portalInfo.label}
             </Link>
           </div>
         </div>

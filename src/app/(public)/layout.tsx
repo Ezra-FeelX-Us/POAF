@@ -1,12 +1,83 @@
 import React from "react";
 import Link from "next/link";
 import MobileMenu from "@/components/MobileMenu";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 
-export default function PublicLayout({
- children,
+export default async function PublicLayout({
+  children,
 }: {
- children: React.ReactNode;
+  children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  
+  let portalInfo = {
+    label: "Sign In \u2192",
+    href: "/auth/login",
+    badgeColor: "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+  };
+
+  if (session?.user) {
+    const role = (session.user as any).role;
+    const userMemberId = (session.user as any).memberId;
+
+    if (role === "SUPER_ADMIN" || role === "ADMIN") {
+      portalInfo = {
+        label: "Admin Portal",
+        href: "/admin/dashboard",
+        badgeColor: "bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 shadow-md"
+      };
+    } else if (role === "LEADER") {
+      portalInfo = {
+        label: "Staff",
+        href: "/portal/department",
+        badgeColor: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md"
+      };
+    } else if (role === "AMBASSADOR") {
+      portalInfo = {
+        label: "Office",
+        href: "/portal/ambassador",
+        badgeColor: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
+      };
+    } else {
+      let isLeader = false;
+      let isAmbassador = false;
+
+      if (userMemberId) {
+        try {
+          const member = await prisma.member.findUnique({
+            where: { id: userMemberId }
+          });
+          if (member?.isLeader) isLeader = true;
+          if (member?.poafId?.startsWith("POAF-AMB") || member?.role?.toLowerCase().includes("ambassador")) isAmbassador = true;
+        } catch (err) {
+          console.error("Member role resolve fallback:", err);
+        }
+      }
+
+      if (isLeader) {
+        portalInfo = {
+          label: "Staff",
+          href: "/portal/department",
+          badgeColor: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md"
+        };
+      } else if (isAmbassador) {
+        portalInfo = {
+          label: "Office",
+          href: "/portal/ambassador",
+          badgeColor: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
+        };
+      } else {
+        portalInfo = {
+          label: "Classroom",
+          href: "/portal/member",
+          badgeColor: "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+        };
+      }
+    }
+  }
+
  return (
  <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-serif italic">
  {/* Global Navbar */}
@@ -14,11 +85,11 @@ export default function PublicLayout({
  <div className="container mx-auto px-6 py-4 flex justify-between items-center">
  <Link href="/" className="text-2xl font-black tracking-widest text-blue-400 flex items-center gap-2">
  <span className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-base">P</span>
- P|AF
+ POAF
  </Link>
  
- <MobileMenu />
-
+ <MobileMenu portalInfo={portalInfo} />
+ 
       <div className="hidden lg:flex gap-6 font-semibold text-xs xl:text-sm items-center">
         <Link href="/" className="hover:text-blue-400 transition-colors">Home</Link>
         <Link href="/about" className="hover:text-blue-400 transition-colors">About</Link>
@@ -34,8 +105,11 @@ export default function PublicLayout({
       </div>
 
       <div className="hidden lg:flex gap-2 items-center">
-        <Link href="/auth/login" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1">
-          Sign In &rarr;
+        <Link 
+          href={portalInfo.href} 
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 ${portalInfo.badgeColor}`}
+        >
+          {portalInfo.label}
         </Link>
       </div>
  </div>
