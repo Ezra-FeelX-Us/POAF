@@ -231,83 +231,83 @@ export default async function HomePage() {
           </div>
 
           {/* National Ambassadors */}
-          <div className="border-t border-slate-200 pt-16">
-            <h3 className="text-2xl md:text-3xl font-bold text-center text-slate-900 mb-10">National Ambassadors</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 text-center">
+          <div className="border-t border-slate-200 pt-12">
+            <h3 className="text-xl md:text-2xl font-bold text-center text-slate-900 mb-8">National Ambassadors</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 text-center">
               {nationalAmbassadors.map((amb, i) => (
-                <div key={i} className="flex flex-col items-center group">
-                  <div className={`w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full mb-4 shadow-md border-4 border-slate-200 bg-no-repeat transition-transform duration-300 group-hover:scale-105 ${amb.bgPos}`} style={{ backgroundImage: `url('${amb.img}')` }}></div>
-                  <h4 className="font-bold text-slate-900 text-base md:text-lg group-hover:text-blue-600 transition-colors">{amb.name}</h4>
-                  <p className="text-xs text-blue-600 font-bold uppercase tracking-wider mt-1">{amb.role}</p>
+                <div key={i} className="flex flex-col items-center group p-2">
+                  <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto rounded-full mb-3 shadow-md border-2 border-slate-200 bg-no-repeat transition-transform duration-300 group-hover:scale-105 ${amb.bgPos}`} style={{ backgroundImage: `url('${amb.img}')` }}></div>
+                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors leading-snug">{amb.name}</h4>
+                  <p className="text-[10px] sm:text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-0.5">{amb.role}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Our Departments */}
-          <div className="py-20 rounded-3xl overflow-hidden relative bg-cover bg-center mt-20 mb-20 shadow-2xl" style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}>
+          <div className="py-14 px-4 sm:px-8 rounded-3xl overflow-hidden relative bg-cover bg-center mt-16 mb-16 shadow-xl" style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}>
             <div className="absolute inset-0 bg-slate-900/90"></div>
-            <div className="px-6 relative z-10 text-white w-full">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-extrabold mb-4">Our Departments</h2>
-                <p className="max-w-2xl mx-auto text-slate-300 text-lg">
+            <div className="px-2 relative z-10 text-white w-full">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl md:text-3xl font-extrabold mb-2">Our Departments</h2>
+                <p className="max-w-2xl mx-auto text-slate-300 text-sm">
                   The driving forces behind POAF's organizational success across Africa.
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* 1. Community Outreach */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787222887149.jpg')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">1. Community Outreach</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Identifying grassroots challenges and implementing sustainable, youth-led solutions.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">1. Community Outreach</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Identifying grassroots challenges and implementing sustainable, youth-led solutions.</p>
                   </div>
                 </div>
                 {/* 2. Technology */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787223249571.jpg')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">2. Technology & Innovation</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Building digital solutions and promoting tech literacy across the continent.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">2. Technology & Innovation</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Building digital solutions and promoting tech literacy across the continent.</p>
                   </div>
                 </div>
                 {/* 3. Research */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787223395009.png')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">3. Research & Engineering</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Pioneering scientific inquiry and infrastructure blueprints for Africa's progress.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">3. Research & Engineering</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Pioneering scientific inquiry and infrastructure blueprints for Africa's progress.</p>
                   </div>
                 </div>
                 {/* 4. Debate */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787223618684.jpg')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">4. Debate & Communication</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Empowering youth voices through structured debate, diplomacy, and dialogue.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">4. Debate & Communication</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Empowering youth voices through structured debate, diplomacy, and dialogue.</p>
                   </div>
                 </div>
                 {/* 5. Youth Empowerment */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787223704562.jpg')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">5. Youth Empowerment</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Fostering personal, academic, and professional growth for African youth.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">5. Youth Empowerment</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Fostering personal, academic, and professional growth for African youth.</p>
                   </div>
                 </div>
                 {/* 6. Capacity Building */}
-                <div className="relative p-8 rounded-2xl hover:-translate-y-2 transition-transform overflow-hidden group min-h-[280px] flex flex-col justify-end">
+                <div className="relative p-6 rounded-2xl hover:-translate-y-1.5 transition-transform overflow-hidden group min-h-[220px] flex flex-col justify-end">
                   <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: "url('/images/media_1787224603096.png')" }}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent"></div>
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl font-bold mb-3 text-blue-300 drop-shadow-md">6. Capacity Building</h3>
-                    <p className="text-slate-200 text-sm leading-relaxed drop-shadow">Training organizational leads and scaling continental outreach initiatives.</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-1.5 text-blue-300 drop-shadow-md">6. Capacity Building</h3>
+                    <p className="text-slate-200 text-xs leading-relaxed drop-shadow">Training organizational leads and scaling continental outreach initiatives.</p>
                   </div>
                 </div>
               </div>
@@ -315,14 +315,14 @@ export default async function HomePage() {
           </div>
 
           {/* Department Leaders */}
-          <div className="bg-slate-100 rounded-3xl py-16 px-4 sm:px-8 mt-20 shadow-inner">
-            <h3 className="text-3xl font-bold text-center text-slate-900 mb-12">Department Leaders</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 text-center">
+          <div className="bg-slate-100 rounded-3xl py-12 px-4 sm:px-8 mt-16 shadow-inner">
+            <h3 className="text-xl md:text-2xl font-bold text-center text-slate-900 mb-8">Department Leaders</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 text-center">
               {leadersToDisplay.map((leader, i) => (
-                <div key={i} className="flex flex-col items-center group">
-                  <div className={`w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full mb-4 shadow-md border-4 border-slate-200 bg-cover transition-transform duration-300 group-hover:scale-105 ${leader.bgPos}`} style={{ backgroundImage: `url('${leader.img}')` }}></div>
-                  <h4 className="font-bold text-slate-900 text-base md:text-lg group-hover:text-blue-600 transition-colors">{leader.name}</h4>
-                  <p className="text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-1">{leader.role}</p>
+                <div key={i} className="flex flex-col items-center group p-2">
+                  <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto rounded-full mb-3 shadow-md border-2 border-slate-200 bg-cover transition-transform duration-300 group-hover:scale-105 ${leader.bgPos}`} style={{ backgroundImage: `url('${leader.img}')` }}></div>
+                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors leading-snug">{leader.name}</h4>
+                  <p className="text-[10px] sm:text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-0.5">{leader.role}</p>
                 </div>
               ))}
             </div>

@@ -22,13 +22,3 @@ body {
 * {
   box-sizing: border-box;
 }
-
-html.force-desktop-mode {
-  min-width: 1200px !important;
-  overflow-x: auto !important;
-}
-
-html.force-desktop-mode body {
-  min-width: 1200px !important;
-  overflow-x: auto !important;
-}

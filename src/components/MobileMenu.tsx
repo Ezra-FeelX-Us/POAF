@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-import DesktopModeToggle from "./DesktopModeToggle";
-
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,9 +28,6 @@ export default function MobileMenu() {
           <Link href="/projects" onClick={() => setIsOpen(false)} className="hover:text-blue-400 transition-colors">Projects</Link>
           <Link href="/competition" onClick={() => setIsOpen(false)} className="text-amber-400 hover:text-amber-300 font-bold transition-colors">Impact Competition</Link>
           <Link href="/verify" onClick={() => setIsOpen(false)} className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">Verify ID</Link>
-          <div className="pt-1 pb-1">
-            <DesktopModeToggle className="w-full" />
-          </div>
           <div className="border-t border-slate-700 pt-3 mt-2 flex flex-col gap-2">
             <Link href="/apply" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow-md">Apply Now</Link>
             <Link href="/admin/dashboard" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors text-white font-bold border border-slate-700 text-xs">Admin Portal</Link>
